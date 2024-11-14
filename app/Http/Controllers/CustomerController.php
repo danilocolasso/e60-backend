@@ -15,8 +15,9 @@ class CustomerController extends Controller
     {
         $perPage = $request->query('perPage', 10);
         $page = $request->query('page', 1);
+        $customers = Customer::paginate($perPage, ['*'], 'page', $page);
 
-        return Customer::paginate($perPage, ['*'], 'page', $page);
+        return response()->json($customers);
     }
 
     /**

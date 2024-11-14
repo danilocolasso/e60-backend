@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('neighborhood');
             $table->string('city');
-            $table->string('state');
+            $table->string('state', 2);
             $table->string('zipcode');
             $table->timestamps();
         });
