@@ -1,0 +1,66 @@
+services:
+  app:
+    build:
+      args:
+        user: e60
+        uid: 1000
+      dockerfile: .docker/Dockerfile
+    container_name: e60_api
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./storage/logs/laravel:/var/log/laravel
+    depends_on:
+      - database
+      - redis
+    networks:
+      - app-network
+
+  webserver:
+    image: nginx:stable-alpine
+    container_name: e60_webserver
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html
+      - ./.docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./storage/logs/nginx:/var/log/nginx
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+  database:
+    image: postgres:15
+    container_name: e60_database
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: e60
+      POSTGRES_PASSWORD: verystrongpassword
+      POSTGRES_DB: escape60
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  redis:
+    container_name: e60_redis
+    image: redis:6.2-alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+volumes:
+  dbdata:
+
+networks:
+  app-network:
+    driver: bridge
