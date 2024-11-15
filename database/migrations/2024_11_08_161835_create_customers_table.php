@@ -15,15 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email');
-            $table->date('birthday');
             $table->string('cpf')->unique();
-            $table->string('phone');
+            $table->date('birthdate')->nullable();
+            $table->string('phone')->nullable();
             $table->string('cellphone');
-            $table->string('address');
-            $table->string('neighborhood');
-            $table->string('city');
-            $table->string('state', 2);
-            $table->string('zipcode');
+            $table->string('address')->nullable();
+            $table->string('neighborhood')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state', 2)->nullable();
+            $table->string('zipcode')->nullable();
             $table->timestamps();
         });
     }

@@ -19,8 +19,8 @@ class CustomerFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
-            'birthday' => $this->faker->date(),
-            'cpf' => $this->faker->numberBetween(1111111111,999999999),
+            'birthdate' => $this->faker->date(),
+            'cpf' => $this->faker->cpf(false),
             'phone' => $this->faker->phoneNumber(),
             'cellphone' => $this->faker->phoneNumber(),
             'address' => $this->faker->streetAddress(),
