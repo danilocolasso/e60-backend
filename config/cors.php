@@ -17,9 +17,9 @@ return [
 
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
-    'allowed_methods' => ['*'],
+    'allowed_methods' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 
-    'allowed_origins' => ['*'], // TODO: Change this to your domain
+    'allowed_origins' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', '')),
 
     'allowed_origins_patterns' => [],
 
@@ -29,6 +29,6 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,
 
 ];
