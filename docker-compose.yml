@@ -55,6 +55,12 @@ services:
     image: redis:6.2-alpine
     ports:
       - "6379:6379"
+    env_file:
+        -   .env
+    command:
+        - /bin/sh
+        - -c
+        - redis-server --requirepass "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"
     networks:
       - app-network
 

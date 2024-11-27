@@ -10,8 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-    private const TOKEN_NAME = 'E60';
-
     public function register(Request $request): JsonResponse
     {
         $data = $request->validate([
@@ -23,12 +21,11 @@ class AuthController extends Controller
 
         $user = User::create($data);
 
+        auth()->login($user);
+
         return response()->json([
-            'message' => 'User created successfully',
-            'user' => [
-                ...$user->toArray(),
-                'token' => $user->createToken(self::TOKEN_NAME)->plainTextToken,
-            ],
+            'message' => 'Registration successful',
+            'user' => $user,
         ]);
     }
 
@@ -45,11 +42,25 @@ class AuthController extends Controller
             ], Response::HTTP_UNAUTHORIZED);
         }
 
-        $user = Auth::user();
+        $request->session()->regenerate();
 
         return response()->json([
-            ...$user->toArray(),
-            'token' => $user->createToken(self::TOKEN_NAME)->plainTextToken,
+            'message' => 'Login successful',
+            'user' => Auth::user(),
+            'session' => $request->session()->all(),
+        ]);
+    }
+
+    public function logout(Request $request): JsonResponse
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return response()->json([
+            'message' => 'Logout successful',
         ]);
     }
 }
