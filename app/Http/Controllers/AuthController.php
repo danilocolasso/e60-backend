@@ -24,7 +24,7 @@ class AuthController extends Controller
         auth()->login($user);
 
         return response()->json([
-            'message' => 'Registration successful',
+            'message' => 'Cadastro realizado com sucesso',
             'user' => $user,
         ]);
     }
@@ -34,20 +34,20 @@ class AuthController extends Controller
         $data = $request->validate([
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6',
+            'remember' => 'sometimes|boolean',
         ]);
 
-        if (!Auth::attempt($data)) {
+        if (!Auth::attempt($data, $data['remember'] ?? false)) {
             return response()->json([
-                'message' => 'Invalid credentials',
+                'message' => 'Usuário ou senha inválidos',
             ], Response::HTTP_UNAUTHORIZED);
         }
 
         $request->session()->regenerate();
 
         return response()->json([
-            'message' => 'Login successful',
+            'message' => 'Login realizado com sucesso',
             'user' => Auth::user(),
-            'session' => $request->session()->all(),
         ]);
     }
 
@@ -56,11 +56,10 @@ class AuthController extends Controller
         Auth::logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return response()->json([
-            'message' => 'Logout successful',
+            'message' => 'Logout realizado com sucesso',
         ]);
     }
 }
