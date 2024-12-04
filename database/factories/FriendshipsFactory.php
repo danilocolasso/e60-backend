@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Customers;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class FriendshipsFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'customers_id' => Customers::factory(),
+            'friendship_customers_id' => Customers::factory(),
+            'status' => $this->faker->randomElement(['pending', 'accepted', 'rejected'])
         ];
     }
 }
