@@ -21,7 +21,7 @@ class FriendshipSeeder extends Seeder
     {
         $oldTable = DB::table('amizade')->get();
 
-        $branchesData = $oldTable->map(function ($row) {
+        $data = $oldTable->map(function ($row) {
             return [
                 'id' => $row->id_amizade,
                 'customers_id' => $row->id_cliente,
@@ -31,6 +31,6 @@ class FriendshipSeeder extends Seeder
             ];
         })->toArray();
 
-        DB::table('friendships')->insert($branchesData);
+        DB::table('friendships')->insert($data);
     }
 }
