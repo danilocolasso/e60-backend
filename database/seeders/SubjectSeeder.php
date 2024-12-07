@@ -15,7 +15,7 @@ class SubjectSeeder extends Seeder
     {
         $oldTable = DB::table('assunto')->get();
 
-        $branchesData = $oldTable->map(function ($row) {
+        $data = $oldTable->map(function ($row) {
             return [
                 'id' => $row->id_subject,
                 'subject_br' => $row->subject_br,
@@ -27,6 +27,6 @@ class SubjectSeeder extends Seeder
             ];
         })->toArray();
 
-        DB::table('subjects')->insert($branchesData);
+        DB::table('subjects')->insert($data);
     }
 }
