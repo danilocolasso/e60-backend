@@ -15,7 +15,7 @@ class BannerSeeder extends Seeder
     {
         $oldTable = DB::table('filial')->get();
 
-        $branchesData = $oldTable->map(function ($row) {
+        $data = $oldTable->map(function ($row) {
             return [
                 'id' => $row->id_banner,
                 'title' => $row->titulo,
@@ -27,6 +27,6 @@ class BannerSeeder extends Seeder
             ];
         })->toArray();
 
-        DB::table('banners')->insert($branchesData);
+        DB::table('banners')->insert($data);
     }
 }
