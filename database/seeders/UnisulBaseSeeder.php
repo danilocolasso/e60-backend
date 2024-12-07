@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UnisulBaseSeeder extends Seeder
 {
@@ -29,7 +30,7 @@ class UnisulBaseSeeder extends Seeder
                 'campus' => $row->campus,
                 'degree' => $row->grau,
                 'referral' => $row->referral,
-                'password' => bcrypt($row->senha),
+                'password' => Hash::make($row->senha),
                 'created_at' => $row->data,
             ];
         })->toArray();

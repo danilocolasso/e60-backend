@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\UnisulBase>
@@ -28,7 +29,7 @@ class UnisulBaseFactory extends Factory
             'campus' => $this->faker->word(),
             'degree' => $this->faker->word(),
             'referral' => $this->faker->word(),
-            'password' => bcrypt('password123'),
+            'password' => Hash::make('password'),
             'created_at' => now(),
         ];
     }
