@@ -15,7 +15,7 @@ class BranchSeeder extends Seeder
     {
         $oldTable = DB::table('filial')->get();
 
-        $branchesData = $oldTable->map(function ($row) {
+        $data = $oldTable->map(function ($row) {
             return [
                 'rps_id' => $row->id_filial_rps,
                 'users_id' => $row->id_usuario,
@@ -64,6 +64,6 @@ class BranchSeeder extends Seeder
             ];
         })->toArray();
 
-        DB::table('branches')->insert($branchesData);
+        DB::table('branches')->insert($data);
     }
 }
