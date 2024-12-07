@@ -16,7 +16,7 @@ class UnisulBase extends Model
         'cpf',
         'phone',
         'city',
-        'uf',
+        'state',
         'school',
         'university',
         'campus',
