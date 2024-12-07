@@ -28,7 +28,7 @@ class BranchSeeder extends Seeder
                 'complement' => $oldBranch->complemento,
                 'district' => $oldBranch->bairro,
                 'city_code' => $oldBranch->codigo_municipio,
-                'zip_code' => $oldBranch->cep,
+                'zip_code' => preg_replace('/\D/', '',$oldBranch->cep),
                 'state' => $oldBranch->uf,
                 'address' => $oldBranch->endereco,
                 'cnpj' => $oldBranch->cnpj,
