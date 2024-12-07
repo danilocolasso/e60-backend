@@ -13,16 +13,16 @@ class SubjectSeeder extends Seeder
      */
     public function run(): void
     {
-        $oldBranches = DB::table('assunto')->get();
+        $oldTable = DB::table('assunto')->get();
 
-        $branchesData = $oldBranches->map(function ($oldBranch) {
+        $branchesData = $oldTable->map(function ($row) {
             return [
-                'id' => $oldBranch->id_subject,
-                'subject_br' => $oldBranch->subject_br,
-                'subject_en' => $oldBranch->subject_en,
-                'subject_es' => $oldBranch->subject_es,
-                'email' => $oldBranch->email,
-                'branches_id' => $oldBranch->id_filial,
+                'id' => $row->id_subject,
+                'subject_br' => $row->subject_br,
+                'subject_en' => $row->subject_en,
+                'subject_es' => $row->subject_es,
+                'email' => $row->email,
+                'branches_id' => $row->id_filial,
                 'created_at' => now(),
             ];
         })->toArray();
