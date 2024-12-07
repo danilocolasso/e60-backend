@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('customers_id')->nullable();
             $table->unsignedBigInteger('friendship_customers_id')->nullable();
-            $table->string('status', 45)->nullable()->comment('status');
+            $table->enum('status', ['confirmed', 'pending', 'rejected'])->nullable();
 
             $table->timestamps();
 

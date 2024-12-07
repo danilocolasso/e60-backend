@@ -20,7 +20,7 @@ class FriendshipFactory extends Factory
         return [
             'customers_id' => Customer::factory(),
             'friendship_customers_id' => Customer::factory(),
-            'status' => $this->faker->randomElement(['pending', 'accepted', 'rejected'])
+            'status' => $this->faker->randomElement(['pending', 'confirmed', 'rejected'])
         ];
     }
 }
