@@ -16,7 +16,7 @@ class UnisulBaseSeeder extends Seeder
     {
         $oldTable = DB::table('base_unisul')->get();
 
-        $branchesData = $oldTable->map(function ($row) {
+        $data = $oldTable->map(function ($row) {
             return [
                 'id' => $row->id,
                 'name' => $row->nome,
@@ -35,6 +35,6 @@ class UnisulBaseSeeder extends Seeder
             ];
         })->toArray();
 
-        DB::table('unisul_bases')->insert($branchesData);
+        DB::table('unisul_bases')->insert($data);
     }
 }
