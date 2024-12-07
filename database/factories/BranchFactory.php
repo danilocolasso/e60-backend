@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Branches>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Branch>
  */
-class BranchesFactory extends Factory
+class BranchFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -30,6 +30,7 @@ class BranchesFactory extends Factory
             'city_code' => $this->faker->postcode(),
             'zip_code' => $this->faker->postcode(),
             'state' => $this->faker->stateAbbr(),
+            'address' => $this->faker->address(),
             'cnpj' => $this->faker->cnpj(),
             'municipal_registration' => $this->faker->randomNumber(8),
             'pagseguro_token' => $this->faker->uuid(),

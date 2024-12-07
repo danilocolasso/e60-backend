@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Branches extends Model
+class Branch extends Model
 {
-    /** @use HasFactory<\Database\Factories\BranchesFactory> */
+    /** @use HasFactory<\Database\Factories\BranchFactory> */
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
@@ -25,6 +25,7 @@ class Branches extends Model
         'city_code',
         'zip_code',
         'state',
+        'address',
         'cnpj',
         'municipal_registration',
         'pagseguro_token',
@@ -53,16 +54,4 @@ class Branches extends Model
         'giftcard_value_per_person',
         'is_advance_voucher',
     ];
-
-    public $timestamps = true;
-
-    // public function rps()
-    // {
-    //     return $this->belongsTo(Rps::class);
-    // }
-
-    // public function user()
-    // {
-    //     return $this->belongsTo(Users::class);
-    // }
 }
