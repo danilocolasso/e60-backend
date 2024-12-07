@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subject', function (Blueprint $table) {
-            $table->id(); // id_subject
-            $table->string('subject_br', 100)->nullable(); // subject_br
-            $table->string('subject_en', 100)->nullable(); // subject_en
-            $table->string('subject_es', 100)->nullable(); // subject_es
-            $table->string('email', 100)->nullable(); // email
-            $table->integer('branches_id')->default(1); // id_filial
+        Schema::create('subjects', function (Blueprint $table) {
+            $table->id();
+            $table->string('subject_br', 100)->nullable();
+            $table->string('subject_en', 100)->nullable();
+            $table->string('subject_es', 100)->nullable();
+            $table->string('email', 100)->nullable();
+            $table->integer('branches_id')->default(1);
 
             $table->timestamps();
 

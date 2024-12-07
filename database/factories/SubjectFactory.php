@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Branches;
+use App\Models\Branch;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Subjects>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Subject>
  */
-class SubjectsFactory extends Factory
+class SubjectFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -22,7 +22,7 @@ class SubjectsFactory extends Factory
             'subject_en' => $this->faker->sentence(3),
             'subject_es' => $this->faker->sentence(3),
             'email' => $this->faker->unique()->safeEmail(),
-            'branches_id' => Branches::factory(),
+            'branches_id' => Branch::factory(),
         ];
     }
 }
