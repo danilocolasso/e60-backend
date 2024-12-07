@@ -21,8 +21,8 @@ class BranchSeeder extends Seeder
                 'users_id' => $oldBranch->id_usuario,
                 'type' => $oldBranch->tipo,
                 'name' => $oldBranch->filial,
-                'phone' => $oldBranch->telefone,
-                'is_active' => $oldBranch->ativo_sn,
+                'phone' => preg_replace('/\D/', '', $oldBranch->telefone),
+                'is_active' => $oldBranch->ativo_sn == 'S' ? true : false,
                 'street' => $oldBranch->logradouro,
                 'number' => $oldBranch->numero,
                 'complement' => $oldBranch->complemento,
@@ -58,8 +58,8 @@ class BranchSeeder extends Seeder
                 'rps_service_trib_code' => $oldBranch->rps_trib_servico_nota,
                 'giftcard_person_limit' => $oldBranch->limite_pessoa_giftcard,
                 'giftcard_value_per_person' => $oldBranch->valor_por_pessoa_giftcard,
-                'is_advance_voucher' => $oldBranch->voucher_antecipado_sn,
-                'deleted_at' => $oldBranch->excluido_sn,
+                'is_advance_voucher' => $oldBranch->voucher_antecipado_sn == 'S' ? true : false,
+                'deleted_at' => $oldBranch->excluido_sn == 'S' ? now() : null,
                 'created_at' => now(),
             ];
         })->toArray();
