@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('friendship', function (Blueprint $table) {
-            $table->id(); // id_amizade
-            $table->unsignedBigInteger('customers_id')->nullable(); // id_cliente
-            $table->unsignedBigInteger('friendship_customers_id')->nullable(); // id_cliente_amigo
-            $table->string('status', 45)->nullable()->comment('status'); // status
+        Schema::create('friendships', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('customers_id')->nullable();
+            $table->unsignedBigInteger('friendship_customers_id')->nullable();
+            $table->string('status', 45)->nullable()->comment('status');
 
             $table->timestamps();
 
