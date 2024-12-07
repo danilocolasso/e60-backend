@@ -13,16 +13,16 @@ class BannerSeeder extends Seeder
      */
     public function run(): void
     {
-        $oldBranches = DB::table('filial')->get();
+        $oldTable = DB::table('filial')->get();
 
-        $branchesData = $oldBranches->map(function ($oldBranch) {
+        $branchesData = $oldTable->map(function ($row) {
             return [
-                'id' => $oldBranch->id_banner,
-                'title' => $oldBranch->titulo,
-                'link' => $oldBranch->link,
-                'image' => $oldBranch->img,
-                'is_active' => $oldBranch->ativo_sn == "S" ? true : false,
-                'deleted_at' => $oldBranch->excluido_sn == "S" ? now() : null,
+                'id' => $row->id_banner,
+                'title' => $row->titulo,
+                'link' => $row->link,
+                'image' => $row->img,
+                'is_active' => $row->ativo_sn == "S" ? true : false,
+                'deleted_at' => $row->excluido_sn == "S" ? now() : null,
                 'created_at' => now(),
             ];
         })->toArray();
