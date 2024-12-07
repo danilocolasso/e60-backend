@@ -19,14 +19,14 @@ class FriendshipSeeder extends Seeder
 
     public function run(): void
     {
-        $oldBranches = DB::table('amizade')->get();
+        $oldTable = DB::table('amizade')->get();
 
-        $branchesData = $oldBranches->map(function ($oldBranch) {
+        $branchesData = $oldTable->map(function ($row) {
             return [
-                'id' => $oldBranch->id_amizade,
-                'customers_id' => $oldBranch->id_cliente,
-                'friendship_customers_id' => $oldBranch->id_cliente_amigo,
-                'status' => self::STATUS[$oldBranch->status],
+                'id' => $row->id_amizade,
+                'customers_id' => $row->id_cliente,
+                'friendship_customers_id' => $row->id_cliente_amigo,
+                'status' => self::STATUS[$row->status],
                 'created_at' => now(),
             ];
         })->toArray();
