@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UnisulBase2Seeder extends Seeder
 {
@@ -14,7 +16,7 @@ class UnisulBase2Seeder extends Seeder
     {
         $oldTable = DB::table('base_unisul_2')->get();
 
-        $branchesData = $oldTable->map(function ($row) {
+        $data = $oldTable->map(function ($row) {
             return [
                 'id' => $row->id,
                 'name' => $row->nome,
@@ -33,6 +35,6 @@ class UnisulBase2Seeder extends Seeder
             ];
         })->toArray();
 
-        DB::table('unisul_base2s')->insert($branchesData);
+        DB::table('unisul_base2s')->insert($data);
     }
 }
