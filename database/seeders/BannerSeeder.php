@@ -27,6 +27,6 @@ class BannerSeeder extends Seeder
             ];
         })->toArray();
 
-        DB::table('branches')->insert($branchesData);
+        DB::table('banners')->insert($branchesData);
     }
 }
