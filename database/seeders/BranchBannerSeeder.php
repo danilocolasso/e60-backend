@@ -13,16 +13,12 @@ class BranchBannerSeeder extends Seeder
      */
     public function run(): void
     {
-        $oldTable = DB::table('banner_filial')->get();
-
-        $data = $oldTable->map(function ($row) {
-            return [
-                'id' => $row->id_banner_filial,
-                'banners_id' => $row->id_banner,
-                'branches_id' => $row->id_filial,
-                'created_at' => now(),
-            ];
-        })->toArray();
+        $data = DB::table('banner_filial')->get()->map(fn($row) => [
+            'id' => $row->id_banner_filial,
+            'banners_id' => $row->id_banner,
+            'branches_id' => $row->id_filial,
+            'created_at' => now(),
+        ])->toArray();
 
         DB::table('branch_banners')->insert($data);
     }
