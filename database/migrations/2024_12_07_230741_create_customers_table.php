@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('zip_code', 9)->nullable();
             $table->string('email', 100)->nullable();
             $table->string('password', 50)->nullable();
-            $table->string('number_mobile', 20)->nullable();
-            $table->string('number_phone', 20)->nullable();
+            $table->string('mobile_number', 20)->nullable();
+            $table->string('phone_number', 20)->nullable();
             $table->boolean('news_subscription')->default(false);
             $table->boolean('is_corporate')->default(false);
             $table->longText('contact_json')->nullable();
