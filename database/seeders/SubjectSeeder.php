@@ -13,9 +13,9 @@ class SubjectSeeder extends Seeder
      */
     public function run(): void
     {
-        $oldTable = DB::table('assunto')->get();
+        $oldData = DB::table('assunto')->get();
 
-        $data = $oldTable->map(function ($row) {
+        $data = $oldData->map(function ($row) {
             return [
                 'id' => $row->id_subject,
                 'subject_br' => $row->subject_br,
