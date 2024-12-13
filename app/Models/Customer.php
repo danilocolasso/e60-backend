@@ -38,4 +38,9 @@ class Customer extends Model
         'username',
         'image_url',
     ];
+
+    public function photos()
+    {
+        return $this->hasMany(CustomerPhoto::class);
+    }
 }
