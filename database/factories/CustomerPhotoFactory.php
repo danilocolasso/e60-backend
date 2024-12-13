@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Branch;
+use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +21,7 @@ class CustomerPhotoFactory extends Factory
             'legend' => $this->faker->sentence(),
             'url' => $this->faker->imageUrl(200, 200, 'people', true),
             'share' => $this->faker->boolean(),
-            'customer_id' => Branch::factory(),
+            'customer_id' => Customer::query()->inRandomOrder()->value('id') ?? Customer::factory(),
         ];
     }
 }

@@ -16,4 +16,9 @@ class CustomerPhoto extends Model
         'share',
         'customer_id',
     ];
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 }

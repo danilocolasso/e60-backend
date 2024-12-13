@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('customer_photos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('customer_id')->nullable();
             $table->string('legend', 45)->nullable();
             $table->string('url', 120)->nullable();
             $table->boolean('share')->default(false);
-            $table->unsignedBigInteger('customer_id')->nullable();
 
             $table->timestamps();
 
@@ -24,7 +24,6 @@ return new class extends Migration
             $table->index('share');
 
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('set null');
-
         });
     }
 
