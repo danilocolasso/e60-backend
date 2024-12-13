@@ -13,19 +13,14 @@ class SubjectSeeder extends Seeder
      */
     public function run(): void
     {
-        $oldData = DB::table('assunto')->get();
-
-        $data = $oldData->map(function ($row) {
-            return [
-                'id' => $row->id_subject,
-                'subject_br' => $row->subject_br,
-                'subject_en' => $row->subject_en,
-                'subject_es' => $row->subject_es,
-                'email' => $row->email,
-                'branches_id' => $row->id_filial,
-                'created_at' => now(),
-            ];
-        })->toArray();
+        $data = DB::table('assunto')->get()->map(fn($row) => [
+            'id' => $row->id_subject,
+            'subject_br' => $row->subject_br,
+            'subject_en' => $row->subject_en,
+            'subject_es' => $row->subject_es,
+            'email' => $row->email,
+            'branches_id' => $row->id_filial,
+        ])->toArray();
 
         DB::table('subjects')->insert($data);
     }
