@@ -13,9 +13,9 @@ class CustomerController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $perPage = $request->query('perPage', 10);
-        $page = $request->query('page', 1);
-        $customers = Customer::paginate($perPage, ['*'], 'page', $page);
+        $currentPage = $request->query('current_page', 1);
+        $perPage = $request->query('per_page', 10);
+        $customers = Customer::paginate($perPage, ['*'], 'page', $currentPage);
 
         return response()->json($customers);
     }
