@@ -13,17 +13,12 @@ class CitySeeder extends Seeder
      */
     public function run(): void
     {
-        $oldTable = DB::table('cidade')->get();
-
-        $data = $oldTable->map(function ($row) {
-            return [
-                'id' => $row->id_cidade,
-                'city' => $row->cidade,
-                'state' => $row->uf,
-                'zip_code' => $row->cep8,
-                'created_at' => now(),
-            ];
-        })->toArray();
+        $data = DB::table('cidade')->get()->map(fn($row) => [
+            'id' => $row->id_cidade,
+            'city' => $row->cidade,
+            'state' => $row->uf,
+            'zip_code' => $row->cep8,
+        ])->toArray();
 
         DB::table('cities')->insert($data);
     }

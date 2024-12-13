@@ -22,7 +22,6 @@ return new class extends Migration
             $table->index('city');
             $table->index('state');
             $table->index('zip_code');
-            $table->index(['state', 'city']);
         });
     }
 
