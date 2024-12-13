@@ -43,4 +43,9 @@ class Customer extends Model
     {
         return $this->hasMany(CustomerPhoto::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
