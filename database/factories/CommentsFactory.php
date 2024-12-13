@@ -22,10 +22,10 @@ class CommentsFactory extends Factory
     {
         return [
             'comment' => $this->faker->sentence(),
-            'customers_id' => Customer::factory(),
-            'parent_comments_id' => Comment::factory(),
+            'customer_id' => Customer::query()->inRandomOrder()->value('id') ?? Customer::factory(),
+            'parent_comment_id' => Comment::query()->inRandomOrder()->value('id') ?? Comment::factory(),
             'approved_by_user_id' => User::factory(),
-            'rooms_id' => Room::factory(),
+            'room_id' => Room::query()->inRandomOrder()->value('id') ?? Room::factory(),
             'approved_at' => $this->faker->dateTime(),
         ];
     }

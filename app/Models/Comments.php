@@ -12,10 +12,25 @@ class Comments extends Model
 
     protected $fillable = [
         'comment',
-        'customers_id',
-        'parent_comments_id',
+        'customer_id',
+        'parent_comment_id',
         'approved_by_user_id',
-        'rooms_id',
+        'room_id',
         'approved_at',
     ];
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function parentComment()
+    {
+        return $this->belongsTo(Comments::class, 'parent_comment_id');
+    }
+
+    public function childComments()
+    {
+        return $this->hasMany(Comments::class, 'parent_comment_id');
+    }
 }
