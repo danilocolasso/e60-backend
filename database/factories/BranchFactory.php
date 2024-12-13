@@ -18,7 +18,6 @@ class BranchFactory extends Factory
     {
         return [
             'rps_id' => $this->faker->randomNumber(),
-            'users_id' => $this->faker->randomNumber(),
             'type' => $this->faker->word(),
             'name' => $this->faker->company(),
             'phone' => $this->faker->phoneNumber(),
@@ -43,10 +42,10 @@ class BranchFactory extends Factory
             'enotas_api_key' => $this->faker->uuid(),
             'enotas_company_id' => $this->faker->uuid(),
             'template_path_issue_report' => $this->faker->filePath(),
-            'progressive_discount_json' => $this->faker->text(),
+            'progressive_discount_json' => $this->faker->json(),
             'last_rps_number' => $this->faker->randomNumber(),
             'rps_tax_rate' => $this->faker->randomFloat(2, 0, 1),
-            'rps_service_code' => $this->faker->word(),
+            'rps_service_code' => $this->faker->randomNumber(),
             'rps_federal_service_code' => $this->faker->word(),
             'rps_municipal_service_code' => $this->faker->word(),
             'rps_municipal_taxation_code' => $this->faker->word(),

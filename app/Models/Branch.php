@@ -13,7 +13,6 @@ class Branch extends Model
 
     protected $fillable = [
         'rps_id',
-        'users_id',
         'type',
         'name',
         'phone',

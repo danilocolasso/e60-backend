@@ -18,11 +18,10 @@ class BranchSeeder extends Seeder
         $data = $oldTable->map(function ($row) {
             return [
                 'rps_id' => $row->id_filial_rps,
-                'users_id' => $row->id_usuario,
                 'type' => $row->tipo,
                 'name' => $row->filial,
                 'phone' => preg_replace('/\D/', '', $row->telefone),
-                'is_active' => $row->ativo_sn == 'S' ? true : false,
+                'is_active' => $row->ativo_sn == 'S',
                 'street' => $row->logradouro,
                 'number' => $row->numero,
                 'complement' => $row->complemento,
@@ -58,9 +57,8 @@ class BranchSeeder extends Seeder
                 'rps_service_trib_code' => $row->rps_trib_servico_nota,
                 'giftcard_person_limit' => $row->limite_pessoa_giftcard,
                 'giftcard_value_per_person' => $row->valor_por_pessoa_giftcard,
-                'is_advance_voucher' => $row->voucher_antecipado_sn == 'S' ? true : false,
+                'is_advance_voucher' => $row->voucher_antecipado_sn == 'S',
                 'deleted_at' => $row->excluido_sn == 'S' ? now() : null,
-                'created_at' => now(),
             ];
         })->toArray();
 

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('rps_id')->nullable();
-            $table->unsignedInteger('users_id');
             $table->string('type', 20);
             $table->string('name', 50);
             $table->string('phone', 50);
@@ -60,14 +59,11 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index('rps_id');
-            $table->index('users_id');
             $table->index('name');
 
-            $table->index(['rps_id', 'users_id']);
             $table->index(['rps_service_code', 'rps_tax_rate']);
 
             $table->foreign('rps_id')->references('id')->on('rps')->onDelete('set null');
-            $table->foreign('users_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
