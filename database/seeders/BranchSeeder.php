@@ -13,9 +13,9 @@ class BranchSeeder extends Seeder
      */
     public function run(): void
     {
-        $oldTable = DB::table('filial')->get();
+        $oldData = DB::table('filial')->get();
 
-        $data = $oldTable->map(function ($row) {
+        $data = $oldData->map(function ($row) {
             return [
                 'rps_id' => $row->id_filial_rps,
                 'type' => $row->tipo,
