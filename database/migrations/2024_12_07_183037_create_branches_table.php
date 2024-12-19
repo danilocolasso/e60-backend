@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('branches', function (Blueprint $table) {
+        Schema::connection('pgsql')->create('branches', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('rps_id')->nullable();
             $table->string('type', 20);
             $table->string('name', 50);
             $table->string('phone', 50);
@@ -58,12 +57,8 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->index('rps_id');
-            $table->index('name');
 
-            $table->index(['rps_service_code', 'rps_tax_rate']);
-
-            $table->foreign('rps_id')->references('id')->on('rps')->onDelete('set null');
+            // $table->foreign('rps_id')->references('id')->on('rps')->onDelete('set null');
         });
     }
 
@@ -72,6 +67,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('branches');
+        Schema::connection('pgsql')->dropIfExists('branches');
     }
 };

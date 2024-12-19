@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::connection('pgsql')->table('users', function (Blueprint $table) {
             $table->enum('role', array_column(UserRoles::cases(), 'value'))->after('password')->default(UserRoles::USER->value);
         });
     }
@@ -22,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::connection('pgsql')->table('users', function (Blueprint $table) {
             $table->dropColumn('role');
         });
     }
