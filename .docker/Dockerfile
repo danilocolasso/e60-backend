@@ -19,6 +19,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN docker-php-ext-install -j$(nproc) \
     pdo_pgsql \
     pgsql \
+    pdo_mysql \
     mbstring \
     exif \
     pcntl \
