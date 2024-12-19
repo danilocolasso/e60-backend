@@ -13,7 +13,7 @@ class BranchSeeder extends Seeder
      */
     public function run(): void
     {
-        $data = DB::table('filial')->get()->map(fn($row) => [
+        $data = DB::connection('mysql')->table('filial')->get()->map(fn($row) => [
             'rps_id' => $row->id_filial_rps,
             'type' => $row->tipo,
             'name' => $row->filial,
@@ -58,6 +58,6 @@ class BranchSeeder extends Seeder
             'deleted_at' => $row->excluido_sn == 'S' ? now() : null,
         ])->toArray();
 
-        DB::table('branches')->insert($data);
+        DB::connection('pgsql')->table('branches')->insert($data);
     }
 }
