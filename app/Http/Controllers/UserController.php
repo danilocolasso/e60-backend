@@ -34,9 +34,12 @@ class UserController extends Controller
         $data = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
+            'username' => 'required|string',
             'password' => 'required|string',
             'password_confirmation' => 'required|string',
             'role' => 'required|string',
+            'branches' => 'array',
+            'management_report_show' => 'integer',
         ]);
 
         $user = $this->userRepository->create($data);
