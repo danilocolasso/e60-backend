@@ -43,8 +43,10 @@ class UserRepository
 
     public function update(User $user, array $data): User
     {
-        if (isset($data['password'])) {
+        if (isset($data['password']) && $data['password']) {
             $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']);
         }
 
         $user->update($data);

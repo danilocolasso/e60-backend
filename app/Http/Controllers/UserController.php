@@ -39,7 +39,7 @@ class UserController extends Controller
             'password_confirmation' => 'required|string',
             'role' => 'required|string',
             'branches' => 'array',
-            'management_report_show' => 'integer',
+            'management_report_show' => 'boolean',
         ]);
 
         $user = $this->userRepository->create($data);
@@ -71,9 +71,12 @@ class UserController extends Controller
         $data = $request->validate([
             'name' => 'string',
             'email' => 'email',
-            'password' => 'string',
-            'password_confirmation' => 'string|required_if:password|string',
-            'role' => 'string',
+            'username' => 'string',
+            'password' => 'nullable|string',
+            'password_confirmation' => 'nullable|string|required_with:password|string',
+            'role' => 'required|string',
+            'branches' => 'array',
+            'management_report_show' => 'boolean',
         ]);
 
         $user = $this->userRepository->update($user, $data);
