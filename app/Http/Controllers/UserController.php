@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
@@ -60,7 +61,7 @@ class UserController extends Controller
      */
     public function edit(User $user): JsonResponse
     {
-        return response()->json($user);
+        return response()->json(new UserResource($user));
     }
 
     /**

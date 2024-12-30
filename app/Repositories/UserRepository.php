@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Enums\UserRoles;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -43,13 +42,15 @@ class UserRepository
 
     public function update(User $user, array $data): User
     {
-        if (isset($data['password']) && $data['password']) {
-            $data['password'] = bcrypt($data['password']);
-        } else {
+        if (array_key_exists('password', $data) && !$data['password']) {
             unset($data['password']);
         }
 
         $user->update($data);
+
+        if (isset($data['branches'])) {
+            $user->branches()->sync($data['branches']);
+        }
 
         return $user;
     }
