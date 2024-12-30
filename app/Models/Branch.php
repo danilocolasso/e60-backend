@@ -53,4 +53,9 @@ class Branch extends Model
         'giftcard_value_per_person',
         'is_advance_voucher',
     ];
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
+    }
 }

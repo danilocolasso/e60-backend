@@ -32,7 +32,7 @@ class AuthController extends Controller
     public function login(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'email' => 'required|string|email|max:255',
+            'username' => 'required|string|min:3',
             'password' => 'required|string|min:6',
             'remember' => 'sometimes|boolean',
         ]);

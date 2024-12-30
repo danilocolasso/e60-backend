@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
@@ -34,9 +35,12 @@ class UserController extends Controller
         $data = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
+            'username' => 'required|string',
             'password' => 'required|string',
             'password_confirmation' => 'required|string',
             'role' => 'required|string',
+            'branches' => 'array',
+            'management_report_show' => 'boolean',
         ]);
 
         $user = $this->userRepository->create($data);
@@ -53,6 +57,14 @@ class UserController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(User $user): JsonResponse
+    {
+        return response()->json(new UserResource($user));
+    }
+
+    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, User $user): JsonResponse
@@ -60,9 +72,12 @@ class UserController extends Controller
         $data = $request->validate([
             'name' => 'string',
             'email' => 'email',
-            'password' => 'string',
-            'password_confirmation' => 'string|required_if:password|string',
-            'role' => 'string',
+            'username' => 'string',
+            'password' => 'nullable|string',
+            'password_confirmation' => 'nullable|string|required_with:password|string',
+            'role' => 'required|string',
+            'branches' => 'array',
+            'management_report_show' => 'boolean',
         ]);
 
         $user = $this->userRepository->update($user, $data);

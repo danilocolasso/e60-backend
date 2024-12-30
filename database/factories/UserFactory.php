@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Enums\UserRoles;
+use App\Models\Branch;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -26,6 +28,7 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'username' => fake()->unique()->userName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
@@ -42,5 +45,13 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    public function configure(): self
+    {
+        return $this->afterCreating(function (User $user) {
+            $branches = Branch::inRandomOrder()->take(1, 3)->pluck('id');
+            $user->branches()->attach($branches);
+        });
     }
 }

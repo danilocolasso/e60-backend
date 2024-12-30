@@ -20,12 +20,12 @@ return new class extends Migration
             $table->boolean('is_active')->default(false);
             $table->string('street', 100)->nullable();
             $table->string('number', 10)->nullable();
-            $table->string('complement', 50)->nullable();
-            $table->string('district', 50)->nullable();
+            $table->string('complement')->nullable();
+            $table->string('district')->nullable();
             $table->string('city_code', 20)->nullable();
             $table->string('zip_code', 9)->nullable();
             $table->string('state', 2)->nullable();
-            $table->string('address', 100)->nullable();
+            $table->string('address')->nullable();
             $table->string('cnpj', 14)->nullable();
             $table->string('municipal_registration', 8)->nullable();
             $table->string('pagseguro_token', 255)->nullable();
@@ -63,7 +63,7 @@ return new class extends Migration
 
             $table->index(['rps_service_code', 'rps_tax_rate']);
 
-            // $table->foreign('rps_id')->references('id')->on('rps')->onDelete('set null');
+//            $table->foreign('rps_id')->references('id')->on('rps')->onDelete('set null');
         });
     }
 
