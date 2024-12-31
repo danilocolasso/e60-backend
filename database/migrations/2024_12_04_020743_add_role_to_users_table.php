@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::connection('pgsql')->table('users', function (Blueprint $table) {
-            $table->enum('role', array_column(UserRoles::cases(), 'value'))->after('password')->default(UserRoles::USER->value);
+            $table->enum('role', array_column(UserRoles::cases(), 'value'))->after('password')->default(UserRoles::USER);
         });
     }
 
