@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Customer extends Model
 {
@@ -28,7 +29,7 @@ class Customer extends Model
         'news_subscription',
         'is_corporate',
         'contact_json',
-        'branches_id',
+        'branch_id',
         'rdstation_message',
         'rdstation_timestamp',
         'rdstation_uuid',
@@ -39,13 +40,23 @@ class Customer extends Model
         'image_url',
     ];
 
-    public function photos()
+    public function photo(): HasMany
     {
         return $this->hasMany(CustomerPhoto::class);
     }
 
-    public function comments()
+    public function comment():HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function friendship():HasMany
+    {
+        return $this->hasMany(Friendship::class);
+    }
+
+    public function friendshipCustomer():HasMany
+    {
+        return $this->hasMany(Friendship::class, 'friendship_customer_id');
     }
 }

@@ -8,20 +8,17 @@ use Illuminate\Support\Facades\DB;
 
 class SubjectSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $data = DB::table('assunto')->get()->map(fn($row) => [
-            'id' => $row->id_subject,
-            'subject_br' => $row->subject_br,
-            'subject_en' => $row->subject_en,
-            'subject_es' => $row->subject_es,
+        $data = DB::connection('mysql')->table('assunto')->get()->map(fn($row) => [
+            'id' => $row->id_assunto,
+            'subject_br' => $row->assunto_br,
+            'subject_en' => $row->assunto_en,
+            'subject_es' => $row->assunto_es,
             'email' => $row->email,
-            'branches_id' => $row->id_filial,
+            'branch_id' => $row->id_filial,
         ])->toArray();
 
-        DB::table('subjects')->insert($data);
+        DB::connection('pgsql')->table('subjects')->insert($data);
     }
 }

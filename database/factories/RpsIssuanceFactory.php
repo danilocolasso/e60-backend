@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\RpsIssuanceRoles;
 use App\Models\Branch;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,7 +23,7 @@ class RpsIssuanceFactory extends Factory
             'start_datetime' => $this->faker->dateTimeThisYear(),
             'records' => $this->faker->numberBetween(1, 100),
             'total_value' => $this->faker->randomFloat(2, 10, 1000),
-            'status' => $this->faker->randomElement(['generated', 'sent']),
+            'status' => RpsIssuanceRoles::random(),
             'first_rps_number' => $this->faker->numberBetween(1, 10000),
         ];
     }

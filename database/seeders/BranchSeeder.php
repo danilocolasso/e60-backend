@@ -18,6 +18,7 @@ class BranchSeeder extends Seeder
     {
         $data = DB::connection('mysql')->table('filial')->get()->map(fn($row) => [
             'id' => $row->id_filial,
+            'user_id' => in_array($row->id_usuario, [0, 33, 57, 146, 249]) ? null : $row->id_usuario,
             'type' => self::TYPE[$row->tipo],
             'name' => $row->filial,
             'phone' => preg_replace('/\D/', '', $row->telefone),
@@ -32,18 +33,11 @@ class BranchSeeder extends Seeder
             'address' => $row->endereco,
             'cnpj' => $row->cnpj,
             'municipal_registration' => $row->inscricao_municipal,
-
-
-            'enotas_api_key' => $row->enotas_apikey,
-            'enotas_company_id' => $row->enotas_empresaid,
             'progressive_discount_json' => $row->desconto_progressivo_json,
-
-            'giftcard_person_limit' => $row->limite_pessoa_giftcard,
-            'giftcard_value_per_person' => $row->valor_por_pessoa_giftcard,
             'is_advance_voucher' => $row->voucher_antecipado_sn == 'S',
             'deleted_at' => $row->excluido_sn == 'S' ? now() : null,
         ])->toArray();
 
-        Branch::factory()->count(5)->create();
+        DB::connection('pgsql')->table('branches')->insert($data);
     }
 }

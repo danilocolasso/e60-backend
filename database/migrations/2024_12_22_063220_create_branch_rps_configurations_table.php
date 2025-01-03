@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::connection('pgsql')->create('branch_rps_configurations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('branch_id')->nullable();
+            $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('cascade');
             $table->double('tax_rate')->nullable();
             $table->string('service_code', 5)->nullable();
             $table->string('federal_service_code', 20)->nullable();

@@ -6,32 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('branch_banners', function (Blueprint $table) {
+        Schema::connection('pgsql')->create('branch_banners', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('banners_id')->nullable();
-            $table->unsignedBigInteger('branches_id')->nullable();
+            $table->foreignId('banner_id')->nullable()->constrained('banners')->onDelete('cascade');
+            $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('cascade');
 
             $table->timestamps();
 
-            $table->index('banners_id');
-            $table->index('branches_id');
-            $table->index(['banners_id', 'branches_id']);
-
-            $table->foreign('banners_id')->references('id')->on('banners')->onDelete('set null');
-            $table->foreign('branches_id')->references('id')->on('branchers_id')->onDelete('set null');
+            $table->index('banner_id');
+            $table->index('branch_id');
+            $table->index(['banner_id', 'branch_id']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('branch_banners');
+        Schema::connection('pgsql')->dropIfExists('branch_banners');
     }
 };

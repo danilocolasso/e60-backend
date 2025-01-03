@@ -22,7 +22,7 @@ class SubjectFactory extends Factory
             'subject_en' => $this->faker->sentence(3),
             'subject_es' => $this->faker->sentence(3),
             'email' => $this->faker->unique()->safeEmail(),
-            'branches_id' => Branch::query()->inRandomOrder()->value('id') ?? Branch::factory(),
+            'branch_id' => Branch::query()->inRandomOrder()->value('id') ?? Branch::factory(),
         ];
     }
 }

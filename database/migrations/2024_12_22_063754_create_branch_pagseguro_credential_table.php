@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::connection('pgsql')->create('branch_pagseguro_credentials', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('branch_id')->nullable();
+            $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('cascade');
             $table->string('token', 255)->nullable();
             $table->string('email', 100)->nullable();
             $table->string('client_id', 100)->nullable();

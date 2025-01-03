@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::connection('pgsql')->create('rooms', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('branch_id')->nullable();
+            $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('cascade');
             $table->string('name_br', 150)->nullable();
             $table->string('name_en', 150)->nullable();
             $table->string('name_es', 150)->nullable();

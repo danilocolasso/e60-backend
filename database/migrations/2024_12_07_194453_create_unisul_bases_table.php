@@ -6,12 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('unisul_bases', function (Blueprint $table) {
+        Schema::connection('pgsql')->create('unisul_bases', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100)->nullable();
             $table->string('email', 100)->nullable();
@@ -35,11 +32,8 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('unisul_bases');
+        Schema::connection('pgsql')->dropIfExists('unisul_bases');
     }
 };

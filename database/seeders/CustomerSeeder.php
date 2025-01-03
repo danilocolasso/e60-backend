@@ -9,43 +9,72 @@ use Illuminate\Support\Facades\Hash;
 
 class CustomerSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $data = DB::table('cliente')->get()->map(fn($row) => [
-            'id' => $row->id,
-            'name' => $row->nome(),
-            'cpf' => preg_replace('/\D/', '', $row->cpf),
-            'birth_date' => $row->data_nascimento,
-            'street' => $row->logradouro,
-            'number' => $row->numero,
-            'complement' => $row->complemento,
-            'district' => $row->bairro,
-            'city' => $row->cidade,
-            'state' => $row->uf,
-            'zip_code' => $row->cep,
-            'email' => $row->email,
-            'password' => Hash::make($row->senha),
-            'mobile_number' => preg_replace('/\D/', '',$row->celular),
-            'phone_number' => preg_replace('/\D/', '',$row->telefone),
-            'news_subscription' => $row->news_sn == 'S',
-            'is_corporate' => $row->corporativo_sn == 'S',
-            'contact_json' => $row->json_contato,
-            'branches_id' => $row->id_filial_faturamento,
-            'rdstation_message' => $row->rdstation_msg,
-            'rdstation_timestamp' => $row->rdstation_timestamp,
-            'rdstation_uuid' => $row->rdstation_uuid,
-            'invitation_code' => $row->codigo_convite,
-            'invitation_used' => $row->convite_utilizado,
-            'achievements' => $row->conquistas,
-            'username' => $row->usuario,
-            'image_url' => $row->url_imagem,
-            'deleted_at' => $row->corporativo_sn == 'S' ? now() : null,
-            'created_at' => $row->data_cadastro,
-        ])->toArray();
+        $batchSize = 500;
+        $offset = 0;
+        $hasMoreRows = true;
 
-        DB::table('customers')->insert($data);
+        while ($hasMoreRows) {
+            $rows = DB::connection('mysql')
+                ->table('cliente')
+                ->selectRaw("
+                    id_cliente AS id,
+                    nome AS name,
+                    REGEXP_REPLACE(documento, '[^0-9]', '') AS cpf,
+                    CASE
+                        WHEN STR_TO_DATE(data_nascimento, '%Y-%m-%d') IS NOT NULL
+                        THEN data_nascimento
+                        ELSE null
+                    END AS birth_date,
+                    logradouro AS street,
+                    numero AS number,
+                    complemento AS complement,
+                    bairro AS district,
+                    cidade AS city,
+                    uf AS state,
+                    cep AS zip_code,
+                    email,
+                    senha AS password,
+                    REGEXP_REPLACE(celular, '[^0-9]', '') AS mobile_number,
+                    REGEXP_REPLACE(telefone, '[^0-9]', '') AS phone_number,
+                    news_sn = 'S' AS news_subscription,
+                    corporativo_sn = 'S' AS is_corporate,
+                    json_contato AS contact_json,
+                    NULLIF(id_filial_faturamento, 0) AS branch_id,
+                    rdstation_msg AS rdstation_message,
+                    rdstation_timestamp,
+                    rdstation_uuid,
+                    codigo_convite AS invitation_code,
+                    convite_utilizado AS invitation_used,
+                    conquistas AS achievements,
+                    usuario AS username,
+                    url_imagem AS image_url,
+                    CASE WHEN corporativo_sn = 'S' THEN NOW() ELSE NULL END AS deleted_at,
+                    data_cadastro AS created_at
+                ")
+                ->limit($batchSize)
+                ->offset($offset)
+                ->get();
+
+            if ($rows->isEmpty()) {
+                $hasMoreRows = false;
+                continue;
+            }
+
+            $data = [];
+            foreach ($rows as &$row) {
+                $rowArray = (array) $row;
+                $rowArray['password'] = bcrypt($row->password);
+                $data[] = $rowArray;
+            }
+
+
+            if ($data) {
+                DB::connection('pgsql')->table('customers')->insert($data);
+            }
+
+            $offset += $batchSize;
+        }
     }
 }

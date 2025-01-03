@@ -8,12 +8,9 @@ use Illuminate\Support\Facades\DB;
 
 class CustomerPhotoSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $data = DB::table('cliente_foto')->get()->map(fn($row) => [
+        $data = DB::connection('mysql')->table('cliente_foto')->get()->map(fn($row) => [
             'id' => $row->id_cliente_foto,
             'legend' => $row->legenda,
             'url' => $row->url_foto,
@@ -21,6 +18,6 @@ class CustomerPhotoSeeder extends Seeder
             'customer_id' => $row->id_cliente,
         ])->toArray();
 
-        DB::table('customer_photos')->insert($data);
+        DB::connection('pgsql')->table('customer_photos')->insert($data);
     }
 }

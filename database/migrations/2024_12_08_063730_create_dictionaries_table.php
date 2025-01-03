@@ -6,32 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('dictionaries', function (Blueprint $table) {
+        Schema::connection('pgsql')->create('dictionaries', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('cascade');
             $table->string('index', 100)->nullable();
-            $table->text('text_pt')->nullable();
-            $table->text('text_en')->nullable();
-            $table->text('text_es')->nullable();
-            $table->unsignedBigInteger('branches_id')->nullable();
+            $table->longText('text_pt')->nullable();
+            $table->longText('text_en')->nullable();
+            $table->longText('text_es')->nullable();
 
             $table->timestamps();
 
-            $table->index('branches_id');
-
-            $table->foreign('branches_id')->references('id')->on('branches')->onDelete('set null');
+            $table->index('branch_id');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('dictionaries');
+        Schema::connection('pgsql')->dropIfExists('dictionaries');
     }
 };

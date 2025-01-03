@@ -10,10 +10,10 @@ return new class extends Migration
     {
         Schema::connection('pgsql')->create('room_schedules', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('branch_id')->nullable();
-            $table->unsignedBigInteger('room_id')->nullable();
-            $table->unsignedBigInteger('booking_id')->nullable();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('cascade');
+            $table->foreignId('room_id')->nullable()->constrained('rooms')->onDelete('cascade');
+            // $table->foreignId('booking_id')->nullable()->constrained('bookings')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->date('date')->nullable();
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
@@ -25,10 +25,10 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            // $table->index('branch_id');
-            // $table->index('room_id');
+            $table->index('branch_id');
+            $table->index('room_id');
             // $table->index('booking_id');
-            // $table->index('user_id');
+            $table->index('user_id');
         });
     }
 

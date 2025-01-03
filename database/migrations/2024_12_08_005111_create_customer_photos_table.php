@@ -6,14 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('customer_photos', function (Blueprint $table) {
+        Schema::connection('pgsql')->create('customer_photos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('customer_id')->nullable();
+            $table->foreignId('customer_id')->nullable()->constrained('customers')->onDelete('cascade');
             $table->string('legend', 45)->nullable();
             $table->string('url', 120)->nullable();
             $table->boolean('share')->default(false);
@@ -22,16 +19,11 @@ return new class extends Migration
 
             $table->index('customer_id');
             $table->index('share');
-
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('set null');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('customer_photos');
+        Schema::connection('pgsql')->dropIfExists('customer_photos');
     }
 };

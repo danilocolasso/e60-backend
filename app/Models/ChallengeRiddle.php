@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ChallengeRiddle extends Model
 {
@@ -18,4 +20,14 @@ class ChallengeRiddle extends Model
         'attempts',
         'image_path',
     ];
+
+    public function challengeEvent(): BelongsTo
+    {
+        return $this->belongsTo(ChallengeEvent::class);
+    }
+
+    public function challengeParticipantRiddle(): HasMany
+    {
+        return $this->hasMany(ChallengeParticipantRiddle::class);
+    }
 }

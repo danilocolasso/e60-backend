@@ -36,7 +36,7 @@ class CustomerFactory extends Factory
             'news_subscription' => $this->faker->boolean(),
             'is_corporate' => $this->faker->boolean(),
             'contact_json' => json_encode(['contact' => $this->faker->sentence()]),
-            'branches_id' => Branch::factory(),
+            'branch_id' => Branch::query()->inRandomOrder()->value('id') ?? Branch::factory(),
             'rdstation_message' => $this->faker->sentence(),
             'rdstation_timestamp' => $this->faker->dateTime(),
             'rdstation_uuid' => $this->faker->uuid(),

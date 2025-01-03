@@ -6,12 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('cities', function (Blueprint $table) {
+        Schema::connection('pgsql')->create('cities', function (Blueprint $table) {
             $table->id();
             $table->string('city', 100)->nullable();
             $table->string('state', 2)->nullable();
@@ -25,11 +22,8 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('cities');
+        Schema::connection('pgsql')->dropIfExists('cities');
     }
 };

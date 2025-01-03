@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ChallengeParticipantRiddlesRoles;
 use App\Models\ChallengeParticipant;
 use App\Models\ChallengeEvent;
 use App\Models\ChallengeRiddle;
@@ -20,12 +21,12 @@ class ChallengeParticipantRiddleFactory extends Factory
     public function definition(): array
     {
         return [
-            'challenge_participants_id' => ChallengeParticipant::factory(),
-            'challenge_events_id' => ChallengeEvent::factory(),
-            'challenge_riddles_id' => ChallengeRiddle::factory(),
+            'challenge_event_id' => ChallengeEvent::query()->inRandomOrder()->value('id') ?? ChallengeEvent::factory(),
+            'challenge_participants_id' => ChallengeParticipant::query()->inRandomOrder()->value('id') ?? ChallengeParticipant::factory(),
+            'challenge_riddle_id' => ChallengeRiddle::query()->inRandomOrder()->value('id') ?? ChallengeRiddle::factory(),
             'attempts' => $this->faker->numberBetween(0, 10),
             'answers' => $this->faker->sentence(),
-            'status' => $this->faker->randomElement(['pending', 'right', 'wrong']),
+            'status' => ChallengeParticipantRiddlesRoles::random(),
         ];
     }
 }

@@ -10,7 +10,7 @@ return new class extends Migration
     {
        Schema::connection('pgsql')->create('branch_paypal_credentials', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('branch_id')->nullable();
+            $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('cascade');
             $table->string('user', 100)->nullable();
             $table->string('password', 100)->nullable();
             $table->string('signature', 255)->nullable();

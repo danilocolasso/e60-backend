@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\FriendshipRoles;
 use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,9 +19,9 @@ class FriendshipFactory extends Factory
     public function definition(): array
     {
         return [
-            'customers_id' => Customer::factory(),
-            'friendship_customers_id' => Customer::factory(),
-            'status' => $this->faker->randomElement(['pending', 'confirmed', 'rejected'])
+            'customer_id' => Customer::factory(),
+            'friendship_customer_id' => Customer::factory(),
+            'status' => FriendshipRoles::random(),
         ];
     }
 }

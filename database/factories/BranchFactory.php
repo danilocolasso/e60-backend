@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\BranchRoles;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,6 +20,7 @@ class BranchFactory extends Factory
     {
         return [
             'status' => BranchRoles::random(),
+            'user_id' => User::query()->inRandomOrder()->value('id') ?? User::factory(),
             'name' => $this->faker->company(),
             'phone' => $this->faker->phoneNumber(),
             'is_active' => $this->faker->boolean(),

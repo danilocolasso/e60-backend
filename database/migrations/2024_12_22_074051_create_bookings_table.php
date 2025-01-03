@@ -108,9 +108,9 @@ return new class extends Migration
         //     $table->unsignedInteger('giftcard_flag')->nullable();
         //     $table->string('discount_type', 45)->nullable();
 
-
-
         //     $table->timestamps();
+
+        // $table->foreignId('branch_id')->constrained();
         // });
     }
 

@@ -7,8 +7,12 @@ if (!function_exists('only_numbers')) {
      * @param string $string
      * @return string
      */
-    function only_numbers(string $string): string
+    function only_numbers(?string $string): ?string
     {
+        if (empty($string)) {
+            return null;
+        }
+
         return preg_replace('/[^0-9]/', '', $string);
     }
 }

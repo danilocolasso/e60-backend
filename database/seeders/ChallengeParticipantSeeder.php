@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class ChallengeParticipantSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     private const STATUS = [
         'ATIVO' => 'active',
         'GANHOU' => 'won',
@@ -19,21 +16,17 @@ class ChallengeParticipantSeeder extends Seeder
 
     public function run(): void
     {
-        $oldTable = DB::table('desafio_participante')->get();
+        $data = DB::connection('mysql')->table('desafio_participante')->get()->map(fn($row) => [
+            'id' => $row->id_desafio_participante,
+            'challenge_event_id' => $row->id_desafio_evento,
+            'name' => $row->nome,
+            'email' => $row->email,
+            'correct_answers' => $row->acertos,
+            'incorrect_answers' => $row->erros,
+            'status' => self::STATUS[$row->status],
+            'created_at' => now(),
+        ])->toArray();
 
-        $data = $oldTable->map(function ($row) {
-            return [
-                'id' => $row->id_desafio_participante,
-                'challenge_events_id' => $row->id_desafio_evento,
-                'name' => $row->nome,
-                'email' => $row->email,
-                'correct_answers' => $row->acertos,
-                'incorrect_answers' => $row->erros,
-                'status' => self::STATUS[$row->status],
-                'created_at' => now(),
-            ];
-        })->toArray();
-
-        DB::table('challenge_participants')->insert($data);
+        DB::connection('pgsql')->table('challenge_participants')->insert($data);
     }
 }

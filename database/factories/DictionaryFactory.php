@@ -19,10 +19,10 @@ class DictionaryFactory extends Factory
     {
         return [
             'index' => $this->faker->unique()->word(),
+            'branch_id' => Branch::query()->inRandomOrder()->value('id') ?? Branch::factory(),
             'text_pt' => $this->faker->sentence(),
             'text_en' => $this->faker->sentence(),
             'text_es' => $this->faker->sentence(),
-            'branches_id' => Branch::factory(),
         ];
     }
 }

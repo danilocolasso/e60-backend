@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -9,17 +10,14 @@ use Illuminate\Support\Facades\Hash;
 
 class UnisulBase3Seeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $data = DB::table('base_unisul_3')->get()->map(fn($row) => [
+        $data = DB::connection('mysql')->table('base_unisul_3')->get()->map(fn($row) => [
             'id' => $row->id,
             'name' => $row->nome,
             'email' => $row->email,
-            'cpf' => preg_replace('/\D/', '',$row->cpf),
-            'phone' => preg_replace('/\D/', '',$row->telefone),
+            'cpf' => only_numbers($row->cpf),
+            'phone' => only_numbers($row->telefone),
             'city' => $row->cidade,
             'state' => $row->uf,
             'school' => $row->escola,
@@ -28,9 +26,9 @@ class UnisulBase3Seeder extends Seeder
             'degree' => $row->grau,
             'referral' => $row->referral,
             'password' => Hash::make($row->senha),
-            'created_at' => $row->data,
+            'created_at' => Carbon::parse($row->data)->isValid() ? Carbon::parse($row->data) : Carbon::now(),
         ])->toArray();
 
-        DB::table('unisul_base3s')->insert($data);
+        DB::connection('pgsql')->table('unisul_base3s')->insert($data);
     }
 }

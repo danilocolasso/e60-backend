@@ -11,6 +11,7 @@ return new class extends Migration
     {
         Schema::connection('pgsql')->create('branches', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->enum('type', array_column(BranchRoles::cases(), 'value'))->default(BranchRoles::ESCAPE);
             $table->string('name', 50);
             $table->string('phone', 50);

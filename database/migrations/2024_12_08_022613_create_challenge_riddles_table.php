@@ -6,14 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('challenge_riddles', function (Blueprint $table) {
+        Schema::connection('pgsql')->create('challenge_riddles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('challenge_events_id')->nullable();
+            $table->foreignId('challenge_event_id')->nullable()->constrained('challenge_events')->onDelete('cascade');
             $table->unsignedInteger('order')->nullable();
             $table->string('title', 100)->nullable();
             $table->string('answer', 100)->nullable();
@@ -23,20 +20,14 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->index('challenge_events_id');
+            $table->index('challenge_event_id');
             $table->index('order');
             $table->index('attempts');
-
-            $table->foreign('challenge_events_id')->references('id')->on('challenge_events')->onDelete('set null');
-
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('challenge_riddles');
+        Schema::connection('pgsql')->dropIfExists('challenge_riddles');
     }
 };

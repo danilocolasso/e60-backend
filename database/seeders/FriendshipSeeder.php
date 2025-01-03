@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class FriendshipSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     private const STATUS = [
         'CONFIRMADO' => 'confirmed',
         'PENDENTE' => 'pending',
@@ -19,14 +16,14 @@ class FriendshipSeeder extends Seeder
 
     public function run(): void
     {
-        $data = DB::table('amizade')->get()->map(fn($row) => [
+        $data = DB::connection('mysql')->table('amizade')->get()->map(fn($row) => [
             'id' => $row->id_amizade,
-            'customers_id' => $row->id_cliente,
-            'friendship_customers_id' => $row->id_cliente_amigo,
+            'customer_id' => $row->id_cliente,
+            'friendship_customer_id' => $row->id_cliente_amigo,
             'status' => self::STATUS[$row->status],
             'created_at' => now(),
         ])->toArray();
 
-        DB::table('friendships')->insert($data);
+        DB::connection('pgsql')->table('friendships')->insert($data);
     }
 }

@@ -14,26 +14,19 @@ class ChallengeParticipantRiddleSeeder extends Seeder
         'ERROU' => 'wrong',
     ];
 
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        $oldTable = DB::table('desafio_participante_enigma')->get();
+        $data = DB::connection('mysql')->table('desafio_participante_enigma')->get()->map(fn($row) => [
+            'id' => $row->id_desafio_participante_enigma,
+            'challenge_participants_id' => $row->id_desafio_participante,
+            'challenge_event_id' => $row->id_desafio_evento,
+            'challenge_riddle_id' => $row->id_desafio_enigma,
+            'attempts' => $row->tentativas,
+            'answers' => $row->respostas,
+            'status' => self::STATUS[$row->status],
+            'created_at' => now(),
+        ])->toArray();
 
-        $data = $oldTable->map(function ($row) {
-            return [
-                'id' => $row->id_desafio_participante_enigma,
-                'challenge_participants_id' => $row->id_desafio_participante,
-                'challenge_events_id' => $row->id_desafio_evento,
-                'challenge_riddles_id' => $row->id_desafio_enigma,
-                'attempts' => $row->tentativas,
-                'answers' => $row->respostas,
-                'status' => self::STATUS[$row->status],
-                'created_at' => now(),
-            ];
-        })->toArray();
-
-        DB::table('challenge_participant_riddles')->insert($data);
+        DB::connection('pgsql')->table('challenge_participant_riddles')->insert($data);
     }
 }

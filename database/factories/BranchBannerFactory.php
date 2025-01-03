@@ -19,8 +19,8 @@ class BranchBannerFactory extends Factory
     public function definition(): array
     {
         return [
-            'banners_id' => Banner::factory(),
-            'branches_id' => Branch::factory(),
+            'banner_id' => Banner::query()->inRandomOrder()->value('id') ?? Banner::factory(),
+            'branch_id' => Branch::query()->inRandomOrder()->value('id') ?? Branch::factory(),
         ];
     }
 }

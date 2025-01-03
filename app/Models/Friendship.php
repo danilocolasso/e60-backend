@@ -11,8 +11,18 @@ class Friendship extends Model
     use HasFactory;
 
     protected $fillable = [
-        'customers_id',
-        'recofriendship_customers_idrds',
+        'customer_id',
+        'friendship_customer_id',
         'status',
     ];
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function friendshipCustomer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 }

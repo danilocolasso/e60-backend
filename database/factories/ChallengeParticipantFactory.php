@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ChallengeParticipantRoles;
 use App\Models\ChallengeEvent;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,12 +19,12 @@ class ChallengeParticipantFactory extends Factory
     public function definition(): array
     {
         return [
-            'challenge_event_id' => ChallengeEvent::factory(),
+            'challenge_event_id' => ChallengeEvent::query()->inRandomOrder()->value('id') ?? ChallengeEvent::factory(),
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'correct_answers' => $this->faker->numberBetween(0, 10),
             'incorrect_answers' => $this->faker->numberBetween(0, 10),
-            'status' => $this->faker->randomElement(['active', 'won', 'lost']),
+            'status' => ChallengeParticipantRoles::random(),
         ];
     }
 }

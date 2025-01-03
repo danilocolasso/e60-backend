@@ -6,13 +6,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::connection('pgsql')->create('customers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('cascade');
             $table->string('name', 100)->nullable();
             $table->string('cpf', 20)->nullable();
             $table->date('birth_date')->nullable();
@@ -24,13 +22,12 @@ return new class extends Migration
             $table->string('state', 2)->nullable();
             $table->string('zip_code', 9)->nullable();
             $table->string('email', 100)->nullable();
-            $table->string('password', 50)->nullable();
+            $table->tinyText('password')->nullable();
             $table->string('mobile_number', 20)->nullable();
             $table->string('phone_number', 20)->nullable();
             $table->boolean('news_subscription')->default(false);
             $table->boolean('is_corporate')->default(false);
             $table->longText('contact_json')->nullable();
-            $table->unsignedBigInteger('branches_id')->nullable();
             $table->string('rdstation_message', 250)->nullable();
             $table->timestamp('rdstation_timestamp')->nullable();
             $table->string('rdstation_uuid', 100)->default('');
@@ -43,18 +40,15 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->index('name');
-            $table->index('cpf');
-            $table->index('email');
-            $table->index('username');
+            // $table->index('name');
+            // $table->index('cpf');
+            // $table->index('email');
+            // $table->index('username');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::connection('pgsql')->dropIfExists('customers');
     }
 };

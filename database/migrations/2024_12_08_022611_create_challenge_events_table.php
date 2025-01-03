@@ -6,30 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('challenge_events', function (Blueprint $table) {
+        Schema::connection('pgsql')->create('challenge_events', function (Blueprint $table) {
             $table->id();
             $table->string('title', 100)->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
-            $table->longText('json_parameter')->nullable();
+            $table->json('json_parameter')->nullable();
             $table->boolean('is_active')->default(false);
 
+            $table->softDeletes();
             $table->timestamps();
 
             $table->index('is_active');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('challenge_events');
+        Schema::connection('pgsql')->dropIfExists('challenge_events');
     }
 };
