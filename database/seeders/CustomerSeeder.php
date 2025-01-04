@@ -11,22 +11,17 @@ class CustomerSeeder extends Seeder
 {
     public function run(): void
     {
-        $batchSize = 500;
+        $batchSize = 1000;
         $offset = 0;
-        $hasMoreRows = true;
 
-        while ($hasMoreRows) {
+        while (true) {
             $rows = DB::connection('mysql')
                 ->table('cliente')
                 ->selectRaw("
                     id_cliente AS id,
                     nome AS name,
                     REGEXP_REPLACE(documento, '[^0-9]', '') AS cpf,
-                    CASE
-                        WHEN STR_TO_DATE(data_nascimento, '%Y-%m-%d') IS NOT NULL
-                        THEN data_nascimento
-                        ELSE null
-                    END AS birth_date,
+                    CASE WHEN STR_TO_DATE(data_nascimento, '%Y-%m-%d') IS NOT NULL THEN data_nascimento ELSE NULL END AS birth_date,
                     logradouro AS street,
                     numero AS number,
                     complemento AS complement,
@@ -58,17 +53,16 @@ class CustomerSeeder extends Seeder
                 ->get();
 
             if ($rows->isEmpty()) {
-                $hasMoreRows = false;
-                continue;
+                break;
             }
 
             $data = [];
             foreach ($rows as &$row) {
                 $rowArray = (array) $row;
-                $rowArray['password'] = bcrypt($row->password);
+                $rowArray['password'] = Hash::make($row->password, ['rounds' => 4]);
+                // TO MAKE THE PROCESS FAST, REDUCE THE INTERACTIONS, BUT IN PROD THERE HAS TO BE 10
                 $data[] = $rowArray;
             }
-
 
             if ($data) {
                 DB::connection('pgsql')->table('customers')->insert($data);

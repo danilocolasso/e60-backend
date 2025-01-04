@@ -20,51 +20,58 @@ class UserSeeder extends Seeder
 
     public function run(): void
     {
+        $usedUsernames = $usedEmails = [];
 
-        DB::connection('pgsql')->table('users')->insert([
-            'name' => 'Root',
-            'username' => 'root',
-            'email' => 'root@user.com',
-            'password' => bcrypt('password'),
-            'role' => UserRoles::ADMIN,
-        ]);
+        $activeData = DB::connection('mysql')
+            ->table('usuario')
+            ->where('excluido_sn', 'N')
+            ->whereNotNull('email')
+            ->get()
+            ->map(function ($row) use (&$usedUsernames, &$usedEmails) {
+                    return $this->processUser($row, $usedUsernames, $usedEmails);
+            })->toArray();
 
+        $deletedData = DB::connection('mysql')
+            ->table('usuario')
+            ->where('excluido_sn', 'S')
+            ->whereNotNull('email')
+            ->get()
+            ->map(function ($row) use (&$usedUsernames, &$usedEmails) {
+                return $this->processUser($row, $usedUsernames, $usedEmails);
+            })->toArray();
 
-        // $usedUsernames = $usedEmails = [];
-        // $data = DB::connection('mysql')
-        //     ->table('usuario')
-        //     ->where('excluido_sn', 'N')
-        //     ->whereNotNull('email')
-        //     ->get()
-        //     ->map(function ($row) use (&$usedUsernames, &$usedEmails) {
-        //             $username = $row->usuario;
-        //             $originalUsername = $username;
-        //             $email = $row->usuario;
-        //             $originalEmail = $email;
+        $data = array_merge($deletedData, $activeData);
 
-        //             $counter = 1;
-        //             while (in_array($username, $usedUsernames)) {
-        //                 $username = $originalUsername . $counter++;
-        //             }
+        DB::connection('pgsql')->table('users')->insert($data);
+    }
 
-        //             while (in_array($email, $usedEmails)) {
-        //                 $email = $originalEmail . $counter++;
-        //             }
+    private function processUser($row, &$usedUsernames, &$usedEmails)
+    {
+        $username = $row->usuario;
+        $originalUsername = $username;
+        $email = $row->usuario;
+        $originalEmail = $email;
 
-        //             $usedUsernames[] = $username;
-        //             $usedEmails[] = $email;
+        $counter = 1;
 
-        //             return [
-        //                 'id' => $row->id_usuario,
-        //                 'username' => $username,
-        //                 'name' => $row->nome,
-        //                 'email' => $email,
-        //                 'password' => bcrypt($row->senha),
-        //                 'role' => self::ROLE[$row->perfil],
-        //             ];
-        //         }
-        //     )->toArray();
+        while (in_array($username, $usedUsernames)) {
+            $username = $originalUsername . $counter++;
+        }
 
-        // DB::connection('pgsql')->table('users')->insert($data);
+        while (in_array($email, $usedEmails)) {
+            $email = $originalEmail . $counter++;
+        }
+
+        $usedUsernames[] = $username;
+        $usedEmails[] = $email;
+
+        return [
+            'id' => $row->id_usuario,
+            'username' => $username,
+            'name' => $row->nome,
+            'email' => $email,
+            'password' => bcrypt($row->senha),
+            'role' => self::ROLE[$row->perfil],
+        ];
     }
 }

@@ -27,7 +27,7 @@ class RoomScheduleFactory extends Factory
         return [
             'branch_id' => Branch::query()->inRandomOrder()->value('id') ?? Branch::factory(),
             'room_id' => Room::query()->inRandomOrder()->value('id') ?? Room::factory(),
-            'booking_id' => Booking::query()->inRandomOrder()->value('id') ?? Booking::factory(),
+            // 'booking_id' => Booking::query()->inRandomOrder()->value('id') ?? Booking::factory(),
             'user_id' => User::query()->inRandomOrder()->value('id') ?? User::factory(),
             'date' => $startTime->format('Y-m-d'),
             'start_time' => $startTime->format('H:i:s'),

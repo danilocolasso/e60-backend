@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BranchRoles;
 use App\Http\Resources\BranchResource;
 use App\Models\Branch;
 use App\Repositories\BranchRepository;
@@ -34,9 +35,23 @@ class BranchController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string',
-            'address' => 'required|string',
             'phone' => 'required|string',
             'email' => 'required|email',
+            'user_id' => 'nullable|int',
+            'type' => 'required|in:' . implode(',', array_column(BranchRoles::cases(), 'value')),
+            'is_active' => 'boolean',
+            'street' => 'nullable|string|max:100',
+            'number' => 'nullable|string|max:10',
+            'complement' => 'nullable|string|max:255',
+            'district' => 'nullable|string|max:255',
+            'city_code' => 'nullable|string|max:20',
+            'zip_code' => 'nullable|string|max:9',
+            'state' => 'nullable|string|max:2',
+            'address' => 'nullable|string',
+            'cnpj' => 'nullable|string|size:14',
+            'municipal_registration' => 'nullable|string|max:8',
+            'progressive_discount_json' => 'nullable|json',
+            'is_advance_voucher' => 'boolean',
         ]);
         // TODO validate
 
@@ -65,9 +80,23 @@ class BranchController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string',
-            'address' => 'required|string',
             'phone' => 'required|string',
             'email' => 'required|email',
+            'user_id' => 'nullable|int',
+            'type' => 'required|in:' . implode(',', array_column(BranchRoles::cases(), 'value')),
+            'is_active' => 'boolean',
+            'street' => 'nullable|string|max:100',
+            'number' => 'nullable|string|max:10',
+            'complement' => 'nullable|string|max:255',
+            'district' => 'nullable|string|max:255',
+            'city_code' => 'nullable|string|max:20',
+            'zip_code' => 'nullable|string|max:9',
+            'state' => 'nullable|string|max:2',
+            'address' => 'nullable|string',
+            'cnpj' => 'nullable|string|size:14',
+            'municipal_registration' => 'nullable|string|max:8',
+            'progressive_discount_json' => 'nullable|json',
+            'is_advance_voucher' => 'boolean',
         ]);
         // TODO validate
 

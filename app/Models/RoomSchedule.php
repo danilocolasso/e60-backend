@@ -14,7 +14,7 @@ class RoomSchedule extends Model
     protected $fillable = [
         'branch_id'.
         'room_id',
-        'booking_id',
+        // 'booking_id',
         'user_id',
         'date',
         'start_time',

@@ -11,43 +11,48 @@ class RoomScheduleSeeder extends Seeder
 {
     public function run(): void
     {
-        $batchSize = 5000;
+        $batchSize = 1000;
         $offset = 0;
-        $hasMoreRows = true;
 
-        while ($hasMoreRows) {
-            $rows = DB::connection('mysql')->table('sala_horario')
+        while (true) {
+            $rows = DB::connection('mysql')
+                ->table('sala_horario')
+                ->selectRaw("
+                    id_sala_horario AS id,
+                    id_filial AS branch_id,
+                    id_sala AS room_id,
+                    id_reserva AS booking_id,
+                    id_usuario_bloqueio AS user_id,
+                    DATE(horario_inicio) AS date,
+                    TIME(horario_inicio) AS start_time,
+                    TIME(horario_termino) AS end_time,
+                    token,
+                    valor AS price,
+                    CASE
+                        WHEN bloqueada_sn = 'S' THEN NOW()
+                        ELSE NULL
+                    END AS blocked_schedule,
+                    motivo AS blocking_history,
+                    CASE
+                        WHEN excluido_sn = 'S' THEN NOW()
+                        ELSE NULL
+                    END AS deleted_at
+                ")
                 ->limit($batchSize)
                 ->offset($offset)
                 ->get();
 
             if ($rows->isEmpty()) {
-                $hasMoreRows = false;
-                continue;
+                break;
             }
 
             $data = [];
             foreach ($rows as &$row) {
-                $startDateTime = Carbon::parse($row->horario_inicio);
-                $endDateTime = Carbon::parse($row->horario_termino);
-
-                $data[] = [
-                    'id' => $row->id_sala_horario,
-                    'branch_id' => $row->id_filial,
-                    'room_id' => $row->id_sala,
-                    'booking_id' => $row->id_reserva,
-                    'user_id' => $row->id_usuario_bloqueio,
-                    'date' => $startDateTime->format('Y-m-d'),
-                    'start_time' => $startDateTime->format('H:i:s'),
-                    'end_time' => $endDateTime->format('H:i:s'),
-                    'token' => $row->token,
-                    'price' => $row->valor,
-                    'blocked_schedule' => $row->bloqueada_sn === "S" ? now() : null,
-                    'blocking_history' => $row->motivo,
-                    'deleted_at' => $row->excluido_sn === "S" ? now() : null,
-                ];
-
-                unset($row);
+                $rowArray = (array) $row;
+                unset($rowArray['booking_id']); // TODO removed the create table booking
+                $rowArray['user_id'] =  $rowArray['user_id'] == 0 ? null : $rowArray['user_id'];
+                $rowArray['branch_id'] =  $rowArray['branch_id'] == 0 ? null : $rowArray['branch_id'];
+                $data[] =  $rowArray;
             }
 
             if ($data) {
@@ -55,10 +60,6 @@ class RoomScheduleSeeder extends Seeder
             }
 
             $offset += $batchSize;
-            unset($data);
-            gc_collect_cycles();
-
-            $hasMoreRows = false;  // REMOVER DEPOIS DOS TESTES
         }
     }
 }

@@ -16,7 +16,7 @@ class DictionarySeeder extends Seeder
             'text_pt' => $row->texto_br,
             'text_en' => $row->texto_en,
             'text_es' => $row->texto_es,
-            'branch_id' => $row->id_filial,
+            'branch_id' => $row->id_filial == 0 ? null : $row->id_filial,
             'created_at' => now(),
         ])->toArray();
 

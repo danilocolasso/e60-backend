@@ -18,7 +18,7 @@ class BranchSeeder extends Seeder
     {
         $data = DB::connection('mysql')->table('filial')->get()->map(fn($row) => [
             'id' => $row->id_filial,
-            'user_id' => in_array($row->id_usuario, [0, 33, 57, 146, 249]) ? null : $row->id_usuario,
+            'user_id' => $row->id_usuario == 0 ? null : $row->id_usuario,
             'type' => self::TYPE[$row->tipo],
             'name' => $row->filial,
             'phone' => preg_replace('/\D/', '', $row->telefone),

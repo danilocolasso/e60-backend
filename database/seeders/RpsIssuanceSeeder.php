@@ -16,45 +16,48 @@ class RpsIssuanceSeeder extends Seeder
     public function run(): void
     {
 
-        $batchSize = 200;
+        $batchSize = 2000;
         $offset = 0;
-        $hasMoreRows = true;
 
-        while ($hasMoreRows) {
-            $rows = DB::connection('mysql')->table('rps')
+        while (true) {
+            $rows = DB::connection('mysql')
+                ->table('rps')
+                ->selectRaw("
+                    id_rps AS id,
+                    id_filial AS branch_id,
+                    CASE
+                        WHEN STR_TO_DATE(data_horario_inicio, '%Y-%m-%d %H:%i:%s') IS NOT NULL THEN data_horario_inicio
+                        ELSE NULL
+                    END AS start_datetime,
+                    registros AS records,
+                    valor_total AS total_value,
+                    status,
+                    numero_primeiro_rps AS first_rps_number,
+                    CASE
+                        WHEN STR_TO_DATE(data_cadastro, '%Y-%m-%d %H:%i:%s') IS NOT NULL THEN data_cadastro
+                        ELSE NULL
+                    END AS created_at
+                ")
                 ->limit($batchSize)
                 ->offset($offset)
                 ->get();
 
             if ($rows->isEmpty()) {
-                $hasMoreRows = false;
-                continue;
+                break;
             }
 
             $data = [];
             foreach ($rows as &$row) {
-                $data[] = [
-                    'id' => $row->id_rps,
-                    'branch_id' => $row->id_filial,
-                    'start_datetime' => $row->data_horario_inicio === '0000-00-00 00:00:00' ? null : $row->data_horario_inicio,
-                    'records' => $row->registros,
-                    'total_value' => $row->valor_total,
-                    'status' => self::STATUS[$row->status],
-                    'first_rps_number' => $row->numero_primeiro_rps,
-                    'created_at' => $row->data_cadastro === '0000-00-00 00:00:00' ? null : $row->data_cadastro,
-                ];
-
-                unset($row);
+                $rowArray = (array) $row;
+                $rowArray['status'] = self::STATUS[$row->status];
+                $data[] =  $rowArray;
             }
-
 
             if ($data) {
                 DB::connection('pgsql')->table('rps_issuances')->insert($data);
             }
 
             $offset += $batchSize;
-            unset($data);
-            gc_collect_cycles();
         }
     }
 }

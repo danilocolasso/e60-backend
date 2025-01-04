@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             BranchPagseguroCredentialSeeder::class,
             BranchPaypalCredentialSeeder::class,
             BranchRpsConfigurationSeeder::class,
+            BranchUserSeeder::class,
             ChallengeEventSeeder::class,
             ChallengeParticipantSeeder::class,
             ChallengeRiddlesSeeder::class,
@@ -34,15 +35,15 @@ class DatabaseSeeder extends Seeder
             CustomerSeeder::class,
             CustomerPhotoSeeder::class,
             CommentsSeeder::class,
-            // CouponSeeder::class,
+            CouponSeeder::class,
             DictionarySeeder::class,
             FriendshipSeeder::class,
             RoomScheduleSeeder::class,
             RpsIssuanceSeeder::class,
             SubjectSeeder::class,
-            // UnisulBase2Seeder::class,
-            // UnisulBase3Seeder::class,
-            // UnisulBaseSeeder::class,
+            UnisulBase2Seeder::class,
+            UnisulBase3Seeder::class,
+            UnisulBaseSeeder::class,
         ]);
     }
 }

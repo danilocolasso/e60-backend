@@ -87,4 +87,9 @@ class Branch extends Model
     {
         return $this->hasMany(RpsIssuance::class);
     }
+
+    public function branchUser(): HasMany
+    {
+        return $this->hasMany(BranchUser::class);
+    }
 }

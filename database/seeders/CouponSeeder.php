@@ -9,65 +9,67 @@ class CouponSeeder extends Seeder
 {
     public function run(): void
     {
-        $batchSize = 500;
+        $batchSize = 2000;
         $offset = 0;
-        $hasMoreRows = true;
 
-        while ($hasMoreRows) {
-            $rows = DB::connection('mysql')->table('cupom')
+        while (true) {
+            $rows = DB::connection('mysql')
+                ->table('cupom')
+                ->selectRaw("
+                    id_cupom AS id,
+                    cupom AS code,
+                    desconto AS discount,
+                    valor_fixo_por_pessoa AS fixed_amount_per_person,
+                    id_filial AS branch_id,
+                    id_sala AS room_id,
+                    id_reserva AS booking_id,
+                    CASE WHEN STR_TO_DATE(data_validade, '%Y-%m-%d') IS NOT NULL THEN data_validade ELSE NULL END AS expiration_date,
+                    horario_inicio AS start_time,
+                    CASE
+                        WHEN horario_fim = '24:00' THEN '23:59'
+                        WHEN REGEXP_LIKE(horario_fim, '^[0-9]{2}:[0-9]{2}$') THEN horario_fim
+                        ELSE NULL
+                    END AS end_time,
+                    CASE WHEN STR_TO_DATE(data_reserva_inicio, '%Y-%m-%d') IS NOT NULL THEN data_reserva_inicio ELSE NULL END AS reservation_start_date,
+                    CASE WHEN STR_TO_DATE(data_reserva_fim, '%Y-%m-%d') IS NOT NULL THEN data_reserva_fim ELSE NULL END AS reservation_end_date,
+                    parceiro AS partner,
+                    JSON_OBJECT(
+                        '0', dia_domingo = 'S',
+                        '1', dia_segunda = 'S',
+                        '2', dia_terca = 'S',
+                        '3', dia_quarta = 'S',
+                        '4', dia_quinta = 'S',
+                        '5', dia_sexta = 'S',
+                        '6', dia_sabado = 'S'
+                    ) AS days_of_week,
+                    CASE
+                        WHEN excluido_sn = 'S' THEN NOW()
+                        ELSE NULL
+                    END AS deleted_at,
+                    NOW() AS created_at
+                ")
                 ->limit($batchSize)
                 ->offset($offset)
                 ->get();
 
             if ($rows->isEmpty()) {
-                $hasMoreRows = false;
-                continue;
+                break;
             }
 
             $data = [];
             foreach ($rows as &$row) {
-                $data[] = [
-                    'id' => $row->id_cupom,
-                    'code' => $row->cupom,
-                    'discount' => $row->desconto,
-                    'fixed_amount_per_person' => $row->valor_fixo_por_pessoa,
-                    'branch_id' => $row->id_filial,
-                    'room_id' => $row->id_sala,
-                    'booking_id' => $row->id_reserva,
-                    'expiration_date' => $row->data_validade === '0000-00-00' ? null : $row->data_validade,
-                    'start_time' => $row->horario_inicio,
-                    'end_time' =>
-                        (!empty($row->horario_fim) && $row->horario_fim === '24:00') ?
-                         '23:59'
-                          :
-                        (preg_match('/^\d{2}:\d{2}$/', $row->horario_fim) ? $row->horario_fim : null),
-                    'reservation_start_date' => $row->data_reserva_inicio === '0000-00-00' ? null : $row->data_reserva_inicio,
-                    'reservation_end_date' => $row->data_reserva_fim === '0000-00-00' ? null : $row->data_reserva_fim,
-                    'partner' => $row->parceiro,
-                    'days_of_week' => json_encode([
-                        0 => $row->dia_domingo == 'S',
-                        1 => $row->dia_segunda == 'S',
-                        2 => $row->dia_terca == 'S',
-                        3 => $row->dia_quarta == 'S',
-                        4 => $row->dia_quinta == 'S',
-                        5 => $row->dia_sexta == 'S',
-                        6 => $row->dia_sabado == 'S',
-                    ]),
-                    'deleted_at' => $row->excluido_sn == 'S' ? now() : null,
-                    'created_at' => now(),
-                ];
-
-                unset($row);
+                $rowArray = (array) $row;
+                unset($rowArray['booking_id']);
+                $rowArray['branch_id'] =  $rowArray['branch_id'] == 0 ? null : $rowArray['branch_id'];
+                $rowArray['room_id'] =  $rowArray['room_id'] == 0 ? null : $rowArray['room_id'];
+                $data[] =  $rowArray;
             }
-
 
             if ($data) {
                 DB::connection('pgsql')->table('coupons')->insert($data);
             }
 
             $offset += $batchSize;
-            unset($data);
-            gc_collect_cycles();
         }
     }
 }
