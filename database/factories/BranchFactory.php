@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\BranchRoles;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +19,8 @@ class BranchFactory extends Factory
     public function definition(): array
     {
         return [
-            'rps_id' => $this->faker->randomNumber(),
-            'type' => $this->faker->word(),
+            'status' => BranchRoles::random(),
+            'user_id' => User::query()->inRandomOrder()->value('id') ?? User::factory(),
             'name' => $this->faker->company(),
             'phone' => $this->faker->phoneNumber(),
             'is_active' => $this->faker->boolean(),
@@ -32,32 +34,9 @@ class BranchFactory extends Factory
             'address' => $this->faker->address(),
             'cnpj' => only_numbers($this->faker->cnpj()),
             'municipal_registration' => $this->faker->randomNumber(8),
-            'pagseguro_token' => $this->faker->uuid(),
-            'pagseguro_email' => $this->faker->email(),
-            'pagseguro_client_id' => $this->faker->uuid(),
-            'pagseguro_client_secret' => $this->faker->uuid(),
-            'paypal_user' => $this->faker->userName(),
-            'paypal_password' => $this->faker->password(),
-            'paypal_signature' => $this->faker->sha256(),
-            'enotas_api_key' => $this->faker->uuid(),
-            'enotas_company_id' => $this->faker->uuid(),
-            'template_path_issue_report' => $this->faker->filePath(),
-            'progressive_discount_json' => $this->faker->sentence(),
-            'last_rps_number' => $this->faker->randomNumber(),
-            'rps_tax_rate' => $this->faker->randomFloat(2, 0, 1),
-            'rps_service_code' => $this->faker->randomNumber(5),
-            'rps_federal_service_code' => $this->faker->text(20),
-            'rps_municipal_service_code' => $this->faker->text(20),
-            'rps_municipal_taxation_code' => $this->faker->text(45),
-            'rps_format' => $this->faker->text(20),
-            'rps_service_item_list' => $this->faker->text(45),
-            'rps_simple_national_optant' => $this->faker->boolean(),
-            'rps_special_trib_regime' => $this->faker->lexify('??'),
-            'rps_service_trib_code' => $this->faker->lexify('??'),
-//            'giftcard_person_limit' => $this->faker->numberBetween(1, 10),
-//            'giftcard_value_per_person' => $this->faker->randomFloat(2, 10, 100),
-//            'is_advance_voucher' => $this->faker->boolean(),
-//            'deleted_at' => $this->faker->optional()->dateTimeThisYear(),
+            'progressive_discount_json' => $this->faker->json(),
+            'is_advance_voucher' => $this->faker->boolean(),
+            'deleted_at' => $this->faker->optional()->dateTimeThisYear(),
         ];
     }
 }

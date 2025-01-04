@@ -8,23 +8,24 @@ use Illuminate\Support\Collection;
 
 class BranchRepository
 {
-    public function paginate(array $parameters): LengthAwarePaginator
+    public function paginate(array $params): LengthAwarePaginator
     {
         $filters = [
-            'query' => $parameters['query'] ?? null,
+            'query' => $params['query'] ?? null,
         ];
 
-        $sort = $parameters['sort'] ?? 'id';
-        $order = $parameters['order'] ?? 'asc';
-        $currentPage = $parameters['current_page'] ?? 1;
-        $perPage = $parameters['per_page'] ?? 10;
+        $sort = $params['sort'] ?? 'id';
+        $order = $params['order'] ?? 'asc';
+        $currentPage = $params['current_page'] ?? 1;
+        $perPage = $params['per_page'] ?? 10;
 
         $query = Branch::query();
 
         if ($filters['query']) {
             $query->where(function ($query) use ($filters) {
-                $query->where('name', 'ilike', "%{$filters['query']}%");
-                // TODO: Add more fields to search
+                $query->where('name', 'ilike', "%{$filters['query']}%")
+                    ->orWhere('cnpj', 'ilike', "%{$filters['query']}%")
+                    ->orWhere('phone', 'ilike', "%{$filters['query']}%");
             });
         }
 

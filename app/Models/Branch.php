@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Branch extends Model
@@ -12,8 +14,8 @@ class Branch extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'rps_id',
         'type',
+        'user_id',
         'name',
         'phone',
         'is_active',
@@ -27,35 +29,67 @@ class Branch extends Model
         'address',
         'cnpj',
         'municipal_registration',
-        'pagseguro_token',
-        'pagseguro_email',
-        'pagseguro_client_id',
-        'pagseguro_client_secret',
-        'paypal_user',
-        'paypal_password',
-        'paypal_signature',
-        'enotas_api_key',
-        'enotas_company_id',
-        'template_path_issue_report',
         'progressive_discount_json',
-        'last_rps_number',
-        'rps_tax_rate',
-        'rps_service_code',
-        'rps_federal_service_code',
-        'rps_municipal_service_code',
-        'rps_municipal_taxation_code',
-        'rps_format',
-        'rps_service_item_list',
-        'rps_simple_national_optant',
-        'rps_special_trib_regime',
-        'rps_service_trib_code',
-        'giftcard_person_limit',
-        'giftcard_value_per_person',
         'is_advance_voucher',
     ];
 
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class)->withTimestamps();
+    }
+
+    public function branchBanner(): HasMany
+    {
+        return $this->hasMany(BranchBanner::class);
+    }
+
+    public function branchEnotas(): HasMany
+    {
+        return $this->hasMany(BranchEnota::class);
+    }
+
+    public function branchGiftcard(): HasMany
+    {
+        return $this->hasMany(BranchGiftcard::class);
+    }
+
+    public function branchPagseguroCredential(): HasMany
+    {
+        return $this->hasMany(BranchPagseguroCredential::class);
+    }
+
+    public function branchPaypalCredential(): HasMany
+    {
+        return $this->hasMany(BranchPaypalCredential::class);
+    }
+
+    public function branchRpsConfiguration(): HasMany
+    {
+        return $this->hasMany(BranchRpsConfiguration::class);
+    }
+
+    public function dictionary(): HasMany
+    {
+        return $this->hasMany(Dictionary::class);
+    }
+
+    public function room(): HasMany
+    {
+        return $this->hasMany(Room::class);
+    }
+
+    public function roomSchedule(): HasMany
+    {
+        return $this->hasMany(RoomSchedule::class);
+    }
+
+    public function rpsIssuance(): HasMany
+    {
+        return $this->hasMany(RpsIssuance::class);
+    }
+
+    public function branchUser(): HasMany
+    {
+        return $this->hasMany(BranchUser::class);
     }
 }

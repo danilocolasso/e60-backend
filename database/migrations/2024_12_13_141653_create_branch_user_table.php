@@ -11,13 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('branch_user', function (Blueprint $table) {
+        Schema::connection('pgsql')->create('branch_users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('branch_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
+            $table->softDeletes();
             $table->timestamps();
 
-            $table->unique(['branch_id', 'user_id']);
+            $table->index('branch_id');
+            $table->index('user_id');
         });
     }
 
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('branch_user');
+        Schema::dropIfExists('branch_users');
     }
 };

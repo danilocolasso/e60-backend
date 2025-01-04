@@ -16,7 +16,7 @@ services:
       - ./:/var/www/html
       - ./storage/logs/laravel:/var/log/laravel
     depends_on:
-      - database
+      - pgsql
       - redis
     networks:
       - app-network
@@ -35,9 +35,9 @@ services:
     networks:
       - app-network
 
-  database:
+  pgsql:
     image: postgres:15
-    container_name: e60_database
+    container_name: e60_pgsql
     restart: unless-stopped
     environment:
       POSTGRES_USER: e60
@@ -47,6 +47,22 @@ services:
       - "5432:5432"
     volumes:
       - dbdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: e60_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: verystrongpassword
+      MYSQL_DATABASE: escape60
+      MYSQL_USER: e60
+      MYSQL_PASSWORD: verystrongpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
     networks:
       - app-network
 
@@ -66,6 +82,7 @@ services:
 
 volumes:
   dbdata:
+  mysql-data:
 
 networks:
   app-network:

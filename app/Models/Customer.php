@@ -4,10 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-/**
- * @method static paginate(array|string|null $perPage, string[] $array, string $string, array|string|null $page)
- */
 class Customer extends Model
 {
     /** @use HasFactory<\Database\Factories\CustomerFactory> */
@@ -15,15 +13,50 @@ class Customer extends Model
 
     protected $fillable = [
         'name',
-        'email',
-        'birthdate',
         'cpf',
-        'phone',
-        'cellphone',
-        'address',
-        'neighborhood',
+        'birth_date',
+        'street',
+        'number',
+        'complement',
+        'district',
         'city',
         'state',
-        'zipcode',
+        'zip_code',
+        'email',
+        'password',
+        'mobile_number',
+        'phone_number',
+        'news_subscription',
+        'is_corporate',
+        'contact_json',
+        'branch_id',
+        'rdstation_message',
+        'rdstation_timestamp',
+        'rdstation_uuid',
+        'invitation_code',
+        'invitation_used',
+        'achievements',
+        'username',
+        'image_url',
     ];
+
+    public function photo(): HasMany
+    {
+        return $this->hasMany(CustomerPhoto::class);
+    }
+
+    public function comment():HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function friendship():HasMany
+    {
+        return $this->hasMany(Friendship::class);
+    }
+
+    public function friendshipCustomer():HasMany
+    {
+        return $this->hasMany(Friendship::class, 'friendship_customer_id');
+    }
 }
