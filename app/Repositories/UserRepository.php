@@ -34,10 +34,13 @@ class UserRepository
 
     public function create(array $data): User
     {
-        $data['password'] = bcrypt($data['password']);
-        unset($data['role']); // TODO
+        $user = User::create($data);
 
-        return User::create($data);
+        if (isset($data['branches'])) {
+            $user->branches()->sync($data['branches']);
+        }
+
+        return $user;
     }
 
     public function update(User $user, array $data): User
