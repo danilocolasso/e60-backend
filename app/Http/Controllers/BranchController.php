@@ -12,10 +12,11 @@ use Illuminate\Http\Response;
 
 class BranchController extends Controller
 {
-    public function __construct(
-        private readonly BranchRepository $branchRepository
-    )
+    private BranchRepository $repository;
+
+    public function __construct(BranchRepository $repository)
     {
+        $this->repository = $repository;
     }
 
     /**
@@ -23,7 +24,7 @@ class BranchController extends Controller
      */
     public function index(): JsonResponse
     {
-        $branches = $this->branchRepository->paginate(request()->all());
+        $branches = $this->repository->paginate(request()->all());
 
         return response()->json($branches);
     }
@@ -55,7 +56,7 @@ class BranchController extends Controller
         ]);
         // TODO validate
 
-        $branch = $this->branchRepository->create($data);
+        $branch = $this->repository->create($data);
 
         return response()->json($branch);
     }
@@ -100,7 +101,7 @@ class BranchController extends Controller
         ]);
         // TODO validate
 
-        $branch = $this->branchRepository->update($branch, $data);
+        $branch = $this->repository->update($branch, $data);
 
         return response()->json($branch);
     }
@@ -117,7 +118,7 @@ class BranchController extends Controller
 
     public function options(): JsonResponse
     {
-        $options = $this->branchRepository->options();
+        $options = $this->repository->options();
 
         return response()->json($options);
     }

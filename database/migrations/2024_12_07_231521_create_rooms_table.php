@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::connection('pgsql')->create('rooms', function (Blueprint $table) {
             $table->id();
             $table->foreignId('branch_id')->nullable()->constrained('branches')->onDelete('cascade');
-            $table->string('name_br', 150)->nullable();
+            $table->string('name_pt', 150)->nullable();
             $table->string('name_en', 150)->nullable();
             $table->string('name_es', 150)->nullable();
             $table->longText('description_br')->nullable();

@@ -2,8 +2,10 @@
 
 namespace App\Repositories;
 
+use App\Enums\UserRoles;
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use InvalidArgumentException;
 
 class UserRepository
 {
@@ -34,8 +36,13 @@ class UserRepository
 
     public function create(array $data): User
     {
+        $data['role'] = $data['role'] ?? UserRoles::USER;
+
+        if (!in_array($data['role'], array_column(UserRoles::cases(), 'value'))) {
+            throw new InvalidArgumentException("Invalid role provided.");
+        }
+
         $data['password'] = bcrypt($data['password']);
-        unset($data['role']); // TODO
 
         return User::create($data);
     }

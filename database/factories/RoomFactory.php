@@ -19,7 +19,7 @@ class RoomFactory extends Factory
     {
         return [
             'branch_id' => Branch::query()->inRandomOrder()->value('id') ?? Branch::factory(),
-            'name_br' => $this->faker->unique()->word(),
+            'name_pt' => $this->faker->unique()->word(),
             'name_en' => $this->faker->unique()->word(),
             'name_es' => $this->faker->unique()->word(),
             'description_br' => $this->faker->sentence(3),

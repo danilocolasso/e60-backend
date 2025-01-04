@@ -13,7 +13,7 @@ class RoomSeeder extends Seeder
         $data = DB::connection('mysql')->table('sala')->get()->map(fn($row) => [
             'id' => $row->id_sala,
             'branch_id' => $row->id_filial == 0 ? null : $row->id_filial,
-            'name_br' => $row->sala,
+            'name_pt' => $row->sala,
             'name_en' => $row->sala_en,
             'name_es' => $row->sala_es,
             'description_br' => $row->descricao,

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedInteger('records')->default(0);
             $table->double('total_value')->nullable();
             $table->enum('status', array_column(RpsIssuanceRoles::cases(), 'value'))->default(RpsIssuanceRoles::GENERATED);
-
             $table->integer('first_rps_number')->default(0);
 
             $table->timestamps();

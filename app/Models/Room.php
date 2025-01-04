@@ -14,7 +14,7 @@ class Room extends Model
 
     protected $fillable = [
         'branch_id',
-        'name_br',
+        'name_pt',
         'name_en',
         'name_es',
         'description_br',
