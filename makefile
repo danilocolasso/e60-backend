@@ -16,7 +16,6 @@ install build:
 	@docker compose exec app php artisan key:generate --ansi
 	@echo "$(YELLOW)Setting up permissions...$(RESET)"
 	@docker compose exec app chmod -R 777 storage bootstrap/cache
-	@$(MAKE) migrate
 
 up start:
 	@echo "$(YELLOW)Starting containers...$(RESET)"
