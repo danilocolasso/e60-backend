@@ -52,7 +52,7 @@ class Customer extends Model
 
     public function coupons(): BelongsToMany
     {
-        return $this->BelongsToMany(Coupon::class);
+        return $this->BelongsToMany(Coupon::class)->withTimestamps();
     }
 
     public function achievements(): BelongsToMany
