@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Branch;
+use App\Models\Coupon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,16 +20,24 @@ class CustomerFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'birthdate' => $this->faker->date(),
-            'cpf' => $this->faker->cpf(false),
-            'phone' => $this->faker->phoneNumber(),
-            'cellphone' => $this->faker->phoneNumber(),
-            'address' => $this->faker->streetAddress(),
-            'neighborhood' => $this->faker->address(),
+            'document_number' => $this->faker->numerify('###########'),
+            'birth_date' => $this->faker->date(),
+            'street' => $this->faker->streetName(),
+            'street_number' => $this->faker->buildingNumber(),
+            'neighborhood' => $this->faker->word(),
+            'zip_code' => $this->faker->numerify('#####-###'),
+            'complement' => $this->faker->word(),
             'city' => $this->faker->city(),
-            'state' => $this->faker->stateAbbr,
-            'zipcode' => $this->faker->postcode(),
+            'state' => $this->faker->stateAbbr(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'username' => $this->faker->unique()->userName(),
+            'password' => $this->faker->password(),
+            'phone' => $this->faker->phoneNumber(),
+            'newsletter' => $this->faker->boolean(),
+            'is_corporate' => $this->faker->boolean(),
+            'branch_id' => Branch::inRandomOrder()->first()->id,
+            'coupon_id' => Coupon::inRandomOrder()->first()->id,
+            'image_url' => $this->faker->imageUrl(),
         ];
     }
 }

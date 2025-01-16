@@ -26,10 +26,8 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string',
-            'cpf' => 'required|string',
-            'email' => 'required|email',
-            'cellphone' => 'required|string',
+            'branch_id' => 'required|exists:branches,id',
+            'name' => 'required|string|max:100',
         ]);
 
         $customer = Customer::create($data);
