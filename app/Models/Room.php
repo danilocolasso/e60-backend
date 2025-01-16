@@ -56,4 +56,9 @@ class Room extends Model
     {
         return $this->hasMany(Coupon::class);
     }
+
+    public function roomSchedules(): HasMany
+    {
+        return $this->hasMany(RoomSchedule::class);
+    }
 }

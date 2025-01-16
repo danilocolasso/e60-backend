@@ -71,6 +71,11 @@ class Branch extends Model
         return $this->hasMany(Room::class);
     }
 
+    public function roomSchedules(): HasMany
+    {
+        return $this->hasMany(RoomSchedule::class);
+    }
+
     public function coupons(): HasMany
     {
         return $this->hasMany(Coupon::class);

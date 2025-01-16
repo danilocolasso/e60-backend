@@ -54,7 +54,6 @@ return new class extends Migration
             $table->integer('giftcard_person_limit')->default(8);
             $table->double('giftcard_value_per_person')->nullable();
             $table->boolean('is_advance_voucher')->default(false);
-
             $table->softDeletes();
             $table->timestamps();
 

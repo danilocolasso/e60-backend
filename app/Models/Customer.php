@@ -48,4 +48,9 @@ class Customer extends Model
     {
         return $this->belongsTo(Branch::class);
     }
+
+    public function achievements(): BelongsToMany
+    {
+        return $this->belongsToMany(Achievement::class)->withTimestamps();
+    }
 }

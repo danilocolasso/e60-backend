@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Achievement;
 use App\Models\Branch;
 use App\Models\Coupon;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -39,5 +40,13 @@ class CustomerFactory extends Factory
             'coupon_id' => Coupon::inRandomOrder()->first()->id,
             'image_url' => $this->faker->imageUrl(),
         ];
+    }
+
+    public function configure(): self
+    {
+        return $this->afterCreating(function ($customer) {
+            $achievements = Achievement::inRandomOrder()->take(1, 3)->pluck('id');
+            $customer->achievements()->attach($achievements);
+        });
     }
 }
