@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Customer;
+use App\Models\Proposal;
 use Illuminate\Database\Seeder;
 
-class CustomerSeeder extends Seeder
+class ProposalSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Customer::factory()->count(20)->create();
+        Proposal::factory()->count(10)->create();
     }
 }

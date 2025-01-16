@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Customer;
+use App\Models\Achievement;
 use Illuminate\Database\Seeder;
 
-class CustomerSeeder extends Seeder
+class AchievementSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Customer::factory()->count(20)->create();
+        Achievement::factory()->count(5)->create();
     }
 }
