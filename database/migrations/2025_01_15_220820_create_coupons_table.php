@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('booking_id')->nullable()->constrained();
             $table->foreignId('branch_id')->nullable()->constrained('branches')->nullOnDelete();
             $table->foreignId('room_id')->nullable()->constrained();
+            $table->foreignId('customer_id')->nullable()->constrained();
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
             $table->boolean('is_valid_sunday')->default(false);

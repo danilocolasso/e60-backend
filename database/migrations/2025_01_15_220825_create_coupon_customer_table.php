@@ -11,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('achievement_customer', function (Blueprint $table) {
+        Schema::create('coupon_customer', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('achievement_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('coupon_id')->constrained()->cascadeOnDelete();
             $table->foreignId('customer_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-
-            $table->unique(['achievement_id', 'customer_id']);
         });
     }
 
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('achievement_customer');
+        Schema::dropIfExists('coupon_customer');
     }
 };

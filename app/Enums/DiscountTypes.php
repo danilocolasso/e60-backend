@@ -4,7 +4,7 @@ namespace App\Enums;
 
 enum DiscountTypes: string
 {
-    const FRIEND_COUPON = 'friend_coupon';
-    const PARTNER_COUPON = 'partner_coupon';
-    const ROOM = 'room';
+    case FRIEND_COUPON = 'friend_coupon';
+    case PARTNER_COUPON = 'partner_coupon';
+    case ROOM = 'room';
 }

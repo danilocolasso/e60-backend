@@ -39,7 +39,7 @@ restart:
 
 migrate:
 	@echo "$(YELLOW)Setting up database...$(RESET)"
-	@docker compose exec app php artisan migrate --seed
+	@docker compose exec app php artisan migrate:refresh --seed
 
 test:
 	@echo "$(YELLOW)Running tests...$(RESET)"

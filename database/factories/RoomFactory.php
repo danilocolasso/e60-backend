@@ -29,7 +29,7 @@ class RoomFactory extends Factory
             'description_es' => $this->faker->paragraph(),
             'min_participants' => $this->faker->numberBetween(1, 2),
             'max_participants' => $this->faker->numberBetween(3, 10),
-            'duration_minutes' => $this->faker->numberBetween(30, 120),
+            'duration_in_minutes' => $this->faker->numberBetween(30, 120),
             'branch_id' => Branch::inRandomOrder()->first()?->id,
             'display_branch_id' => Branch::inRandomOrder()->first()?->id,
             'valid_from' => $this->faker->dateTimeBetween('-1 month', 'now'),

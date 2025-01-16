@@ -18,12 +18,12 @@ class DatabaseSeeder extends Seeder
             CustomerSeeder::class,
             CustomerContactSeeder::class,
             RoomSeeder::class,
-            RoomScheduleSeeder::class,
+            UserSeeder::class,
             ProposalSeeder::class,
             RpsSeeder::class,
             BookingSeeder::class,
+            RoomScheduleSeeder::class,
             CouponSeeder::class,
-            UserSeeder::class,
         ]);
     }
 }

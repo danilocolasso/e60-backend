@@ -27,7 +27,7 @@ return new class extends Migration {
             $table->unsignedInteger('participants')->nullable();
             $table->decimal('amount', 10, 2)->nullable();
             $table->date('due_date')->nullable();
-            $table->enum('status', array_column(BookingStatus::cases(), 'value'))->default(BookingStatus::PENDING);          // keep as text? (pendente, pago, etc.)
+            $table->enum('status', array_column(BookingStatus::cases(), 'value'))->default(BookingStatus::PENDING);
             $table->string('language')->nullable();
             $table->json('pagseguro_data')->nullable();
             $table->json('paypal_data')->nullable();

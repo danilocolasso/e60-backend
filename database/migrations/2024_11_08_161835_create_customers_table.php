@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('document_number')->nullable();
             $table->date('birth_date')->nullable();
             $table->string('email')->unique();
-            $table->string('cellphone')->nullable();
+            $table->string('phone')->nullable();
             $table->string('street')->nullable();
             $table->string('street_number')->nullable();
             $table->string('neighborhood')->nullable();
@@ -29,7 +29,6 @@ return new class extends Migration {
             $table->boolean('newsletter')->default(false);
             $table->boolean('is_corporate')->default(false);
             $table->foreignId('branch_id')->constrained('branches')->cascadeOnDelete();
-            $table->foreignId('coupon_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('image_url')->nullable();
             $table->json('rd_station_data')->nullable();
             $table->timestamps();

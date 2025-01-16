@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Coupon extends Model
 {
@@ -18,6 +19,7 @@ class Coupon extends Model
         'booking_id',
         'branch_id',
         'room_id',
+        'customer_id',
         'valid_until',
         'start_time',
         'end_time',
@@ -46,5 +48,10 @@ class Coupon extends Model
     public function room(): BelongsTo
     {
         return $this->belongsTo(Room::class);
+    }
+
+    public function customers(): BelongsToMany
+    {
+        return $this->BelongsToMany(Customer::class);
     }
 }

@@ -4,13 +4,13 @@ namespace App\Enums;
 
 enum PaymentMethods: string
 {
-    const CASH = 'cash';
-    const CARD = 'card';
-    const DEPOSIT = 'deposit';
-    const BILLED = 'billed';
-    const BOLETO = 'boleto';
-    const COURTESY = 'courtesy';
-    const PAGSEGURO = 'pagseguro';
-    const PAYPAL = 'paypal';
-    const PIX = 'pix';
+    case CASH = 'cash';
+    case CARD = 'card';
+    case DEPOSIT = 'deposit';
+    case BILLED = 'billed';
+    case BOLETO = 'boleto';
+    case COURTESY = 'courtesy';
+    case PAGSEGURO = 'pagseguro';
+    case PAYPAL = 'paypal';
+    case PIX = 'pix';
 }

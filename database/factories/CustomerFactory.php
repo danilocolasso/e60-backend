@@ -37,7 +37,6 @@ class CustomerFactory extends Factory
             'newsletter' => $this->faker->boolean(),
             'is_corporate' => $this->faker->boolean(),
             'branch_id' => Branch::inRandomOrder()->first()->id,
-            'coupon_id' => Coupon::inRandomOrder()->first()->id,
             'image_url' => $this->faker->imageUrl(),
         ];
     }

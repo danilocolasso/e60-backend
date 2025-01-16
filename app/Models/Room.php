@@ -24,7 +24,7 @@ class Room extends Model
         'description_es',
         'min_participants',
         'max_participants',
-        'duration_minutes',
+        'duration_in_minutes',
         'branch_id',
         'display_branch_id',
         'valid_from',
