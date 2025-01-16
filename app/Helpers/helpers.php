@@ -12,16 +12,3 @@ if (!function_exists('only_numbers')) {
         return preg_replace('/[^0-9]/', '', $string);
     }
 }
-
-if (!function_exists('enum_values')) {
-    /**
-     * Get the values of an enum.
-     *
-     * @param string $enum
-     * @return array
-     */
-    function enum_values(string $enum): array
-    {
-        return array_values($enum::toArray());
-    }
-}

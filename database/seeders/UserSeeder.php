@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'username' => 'root',
             'email' => 'root@user.com',
             'password' => bcrypt('password'),
-            'role' => UserRoles::ADMIN,
+            'role' => UserRoles::MASTER,
         ]);
 
         User::factory()->count(85)->create();

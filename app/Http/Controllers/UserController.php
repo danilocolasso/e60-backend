@@ -8,6 +8,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -22,6 +23,8 @@ class UserController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        Gate::authorize('viewAny', User::class);
+
         $users = $this->userRepository->paginate($request->all());
 
         return response()->json($users);
@@ -32,6 +35,8 @@ class UserController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        Gate::authorize('create', User::class);
+
         $data = $request->validate([
             'name' => 'required|string',
             'email' => 'required|email',
@@ -53,6 +58,8 @@ class UserController extends Controller
      */
     public function show(User $user): JsonResponse
     {
+        Gate::authorize('view', $user);
+
         return response()->json($user);
     }
 
@@ -61,6 +68,8 @@ class UserController extends Controller
      */
     public function edit(User $user): JsonResponse
     {
+        Gate::authorize('update', $user);
+
         return response()->json(new UserResource($user));
     }
 
@@ -69,6 +78,8 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user): JsonResponse
     {
+        Gate::authorize('update', $user);
+
         $data = $request->validate([
             'name' => 'string',
             'email' => 'email',
@@ -90,6 +101,8 @@ class UserController extends Controller
      */
     public function destroy(User $user): Response
     {
+        Gate::authorize('delete', $user);
+
         $user->delete();
 
         return response()->noContent();
