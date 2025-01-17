@@ -2,20 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
+use App\Repositories\CustomerRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 
 class CustomerController extends Controller
 {
+    public function __construct(
+        private readonly CustomerRepository $customerRepository
+    )
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request): JsonResponse
     {
-        $currentPage = $request->query('current_page', 1);
-        $perPage = $request->query('per_page', 10);
-        $customers = Customer::paginate($perPage, ['*'], 'page', $currentPage);
+        Gate::authorize('viewAny', Customer::class);
+
+        $customers = $this->customerRepository->paginate($request->all());
 
         return response()->json($customers);
     }
@@ -23,11 +33,29 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
+        Gate::authorize('create', Customer::class);
+
         $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'document_number' => 'nullable|string|max:255',
+            'birth_date' => 'nullable|date',
+            'email' => 'required|email',
+            'phone' => 'nullable|string|max:20',
+            'street' => 'nullable|string|max:255',
+            'street_number' => 'nullable|string|max:20',
+            'neighborhood' => 'nullable|string|max:255',
+            'zip_code' => 'nullable|string|max:20',
+            'complement' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'state' => 'nullable|string|max:255',
+            'username' => 'required|string|max:255|unique:customers',
+            'password' => 'required|string|min:8',
+            'newsletter' => 'boolean',
+            'is_corporate' => 'boolean',
             'branch_id' => 'required|exists:branches,id',
-            'name' => 'required|string|max:100',
+            'image_url' => 'nullable|url',
         ]);
 
         $customer = Customer::create($data);
@@ -38,17 +66,52 @@ class CustomerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Customer $customer)
+    public function show(Customer $customer): JsonResponse
     {
+        Gate::authorize('view', $customer);
+
         return response()->json($customer);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Customer $customer): JsonResponse
+    {
+        Gate::authorize('update', $customer);
+
+        return response()->json(new CustomerResource($customer));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Customer $customer)
+    public function update(Request $request, Customer $customer): JsonResponse
     {
-        $customer->update($request->input());
+        Gate::authorize('update', $customer);
+
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'document_number' => 'nullable|string|max:255',
+            'birth_date' => 'nullable|date',
+            'email' => 'required|email',
+            'phone' => 'nullable|string|max:20',
+            'street' => 'nullable|string|max:255',
+            'street_number' => 'nullable|string|max:20',
+            'neighborhood' => 'nullable|string|max:255',
+            'zip_code' => 'nullable|string|max:20',
+            'complement' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'state' => 'nullable|string|max:255',
+            'username' => 'required|string|max:255|unique:customers,username,' . $customer->id,
+            'password' => 'nullable|string|min:8',
+            'newsletter' => 'boolean',
+            'is_corporate' => 'boolean',
+            'branch_id' => 'required|exists:branches,id',
+            'image_url' => 'nullable|url',
+        ]);
+
+        $customer = $this->customerRepository->update($customer, $data);
 
         return response()->json($customer);
     }
@@ -56,8 +119,10 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Customer $customer)
+    public function destroy(Customer $customer): Response
     {
+        Gate::authorize('delete', $customer);
+
         $customer->delete();
 
         return response()->noContent();

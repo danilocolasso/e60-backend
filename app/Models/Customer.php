@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @method static paginate(array|string|null $perPage, string[] $array, string $string, array|string|null $page)
@@ -15,6 +15,12 @@ class Customer extends Model
 {
     /** @use HasFactory<\Database\Factories\CustomerFactory> */
     use HasFactory;
+    use SoftDeletes;
+
+    protected $hidden = [
+        'password',
+        'deleted_at',
+    ];
 
     protected $fillable = [
         'name',

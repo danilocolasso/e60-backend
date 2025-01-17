@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RoomSchedule extends Model
 {
     /** @use HasFactory<\Database\Factories\RoomScheduleFactory> */
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'branch_id',
