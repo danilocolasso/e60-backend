@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Customer;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 
 class CustomerRepository
 {
@@ -35,6 +36,17 @@ class CustomerRepository
         return $query->paginate($perPage, ['*'], 'page', $currentPage);
     }
 
+    public function store(array $data): Customer
+    {
+        $customer = Customer::create($data);
+
+        if (isset($data['contacts'])) {
+            $customer->contacts()->createMany($data['contacts']);
+        }
+
+        return $customer;
+    }
+
     public function update(Customer $customer, array $data): Customer
     {
         if (array_key_exists('password', $data) && !$data['password']) {
@@ -43,6 +55,25 @@ class CustomerRepository
 
         $customer->update($data);
 
+        if (isset($data['contacts'])) {
+            $this->updateCustomerContacts($customer, $data['contacts']);
+        }
+
         return $customer;
+    }
+
+    private function updateCustomerContacts(Customer $customer, array $contacts): void
+    {
+        if (empty($contacts)) {
+            $customer->contacts()->delete();
+            return;
+        }
+
+        $ids = collect($contacts)->pluck('id')->toArray();
+        $customer->contacts()->whereNotIn('id', array_filter($ids))->delete();
+
+        foreach ($contacts as $contact) {
+            $customer->contacts()->updateOrCreate(['id' => $contact['id'] ?? null], $contact);
+        }
     }
 }

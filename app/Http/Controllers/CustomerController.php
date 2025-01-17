@@ -38,7 +38,7 @@ class CustomerController extends Controller
         Gate::authorize('create', Customer::class);
 
         $data = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|min:3|max:255',
             'document_number' => 'nullable|string|max:255',
             'birth_date' => 'nullable|date',
             'email' => 'required|email',
@@ -51,14 +51,18 @@ class CustomerController extends Controller
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'username' => 'required|string|max:255|unique:customers',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:6',
             'newsletter' => 'boolean',
             'is_corporate' => 'boolean',
             'branch_id' => 'required|exists:branches,id',
             'image_url' => 'nullable|url',
+            'contacts' => 'array',
+            'contacts.*.name' => 'required|string|min:3|max:255',
+            'contacts.*.email' => 'required|email|max:255',
+            'contacts.*.phone' => 'required|string|max:20',
         ]);
 
-        $customer = Customer::create($data);
+        $customer = $this->customerRepository->store($data);
 
         return response()->json($customer);
     }
@@ -91,7 +95,7 @@ class CustomerController extends Controller
         Gate::authorize('update', $customer);
 
         $data = $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|min:3|max:255',
             'document_number' => 'nullable|string|max:255',
             'birth_date' => 'nullable|date',
             'email' => 'required|email',
@@ -104,11 +108,16 @@ class CustomerController extends Controller
             'city' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
             'username' => 'required|string|max:255|unique:customers,username,' . $customer->id,
-            'password' => 'nullable|string|min:8',
+            'password' => 'nullable|string|min:6',
             'newsletter' => 'boolean',
             'is_corporate' => 'boolean',
             'branch_id' => 'required|exists:branches,id',
             'image_url' => 'nullable|url',
+            'contacts' => 'array',
+            'contacts.*.id' => 'nullable|exists:customer_contacts,id',
+            'contacts.*.name' => 'required|string|min:3|max:255',
+            'contacts.*.email' => 'required|email|max:255',
+            'contacts.*.phone' => 'required|string|max:20',
         ]);
 
         $customer = $this->customerRepository->update($customer, $data);
