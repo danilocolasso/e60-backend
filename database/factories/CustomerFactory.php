@@ -30,7 +30,7 @@ class CustomerFactory extends Factory
             'complement' => $this->faker->word(),
             'city' => $this->faker->city(),
             'state' => $this->faker->stateAbbr(),
-            'email' => $this->faker->unique()->safeEmail(),
+            'email' => $this->faker->safeEmail(),
             'username' => $this->faker->unique()->userName(),
             'password' => $this->faker->password(),
             'phone' => $this->faker->phoneNumber(),

@@ -13,6 +13,7 @@ class CustomerContact extends Model
     protected $fillable = [
         'customer_id',
         'name',
+        'department',
         'email',
         'phone',
         'created_at',

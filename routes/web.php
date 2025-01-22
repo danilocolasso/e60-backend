@@ -10,4 +10,5 @@ Route::middleware('auth:sanctum')->group(function () {
     require __DIR__ . '/user.php';
     require __DIR__ . '/customer.php';
     require __DIR__ . '/branch.php';
+    require __DIR__ . '/address.php';
 });

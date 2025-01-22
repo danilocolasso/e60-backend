@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\CustomerConsultCnpjDTO;
+use App\Enums\States;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use App\Repositories\CustomerRepository;
+use App\Rules\ValidCnpj;
+use App\Services\CnpjApiService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
+use Validator;
 
 class CustomerController extends Controller
 {
@@ -49,7 +55,7 @@ class CustomerController extends Controller
             'zip_code' => 'nullable|string|max:20',
             'complement' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
-            'state' => 'nullable|string|max:255',
+            'state' => ['nullable', 'string', 'max:2', Rule::enum(States::class)],
             'username' => 'required|string|max:255|unique:customers',
             'password' => 'required|string|min:6',
             'newsletter' => 'boolean',
@@ -57,9 +63,10 @@ class CustomerController extends Controller
             'branch_id' => 'required|exists:branches,id',
             'image_url' => 'nullable|url',
             'contacts' => 'array',
-            'contacts.*.name' => 'required|string|min:3|max:255',
-            'contacts.*.email' => 'required|email|max:255',
-            'contacts.*.phone' => 'required|string|max:20',
+            'contacts.*.name' => 'nullable|string|min:3|max:255',
+            'contacts.*.department' => 'nullable|string|min:3|max:255',
+            'contacts.*.email' => 'nullable|email|max:255',
+            'contacts.*.phone' => 'nullable|string|max:20',
         ]);
 
         $customer = $this->customerRepository->store($data);
@@ -106,7 +113,7 @@ class CustomerController extends Controller
             'zip_code' => 'nullable|string|max:20',
             'complement' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
-            'state' => 'nullable|string|max:255',
+            'state' => ['nullable', 'string', 'max:2', Rule::enum(States::class)],
             'username' => 'required|string|max:255|unique:customers,username,' . $customer->id,
             'password' => 'nullable|string|min:6',
             'newsletter' => 'boolean',
@@ -115,9 +122,10 @@ class CustomerController extends Controller
             'image_url' => 'nullable|url',
             'contacts' => 'array',
             'contacts.*.id' => 'nullable|exists:customer_contacts,id',
-            'contacts.*.name' => 'required|string|min:3|max:255',
-            'contacts.*.email' => 'required|email|max:255',
-            'contacts.*.phone' => 'required|string|max:20',
+            'contacts.*.name' => 'nullable|string|min:3|max:255',
+            'contacts.*.department' => 'nullable|string|min:3|max:255',
+            'contacts.*.email' => 'nullable|email|max:255',
+            'contacts.*.phone' => 'nullable|string|max:20',
         ]);
 
         $customer = $this->customerRepository->update($customer, $data);
@@ -135,5 +143,21 @@ class CustomerController extends Controller
         $customer->delete();
 
         return response()->noContent();
+    }
+
+    public function consultCnpj(Request $request, string $cnpj): JsonResponse
+    {
+        $validator = Validator::make(['cnpj' => $cnpj], [
+            'cnpj' => ['required', new ValidCnpj()],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        $service = new CnpjApiService();
+        $data = $service->consult(only_numbers($cnpj));
+
+        return response()->json(CustomerConsultCnpjDTO::fromArray($data));
     }
 }
