@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum DiscountTypes: string
+enum DiscountType: string
 {
     case FRIEND_COUPON = 'friend_coupon';
     case PARTNER_COUPON = 'partner_coupon';

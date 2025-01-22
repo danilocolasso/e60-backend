@@ -2,22 +2,22 @@
 
 namespace App\Traits;
 
-use App\Enums\UserRoles;
+use App\Enums\UserRole;
 use App\Models\User;
 
 trait UserRoleTrait
 {
-    private function roleHierarchy(UserRoles $role): int
+    private function roleHierarchy(UserRole $role): int
     {
         return match ($role) {
-            UserRoles::MASTER => 4,
-            UserRoles::ADVANCED => 3,
-            UserRoles::INTERMEDIATE => 2,
-            UserRoles::BASIC => 1,
+            UserRole::MASTER => 4,
+            UserRole::ADVANCED => 3,
+            UserRole::INTERMEDIATE => 2,
+            UserRole::BASIC => 1,
         };
     }
 
-    private function hasHigherOrEqualRole(User $user, UserRoles $role): bool
+    private function hasHigherOrEqualRole(User $user, UserRole $role): bool
     {
         return $this->roleHierarchy($user->role) >= $this->roleHierarchy($role);
     }

@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Enums\UserRoles;
+use App\Enums\UserRole;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -19,7 +18,7 @@ class UserSeeder extends Seeder
             'username' => 'root',
             'email' => 'root@user.com',
             'password' => bcrypt('password'),
-            'role' => UserRoles::MASTER,
+            'role' => UserRole::MASTER,
         ]);
 
         User::factory()->count(85)->create();

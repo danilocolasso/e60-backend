@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DTO\CustomerConsultCnpjDTO;
-use App\Enums\States;
+use App\Enums\State;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use App\Repositories\CustomerRepository;
@@ -55,7 +55,7 @@ class CustomerController extends Controller
             'zip_code' => 'nullable|string|max:20',
             'complement' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
-            'state' => ['nullable', 'string', 'max:2', Rule::enum(States::class)],
+            'state' => ['nullable', 'string', 'max:2', Rule::enum(State::class)],
             'username' => 'required|string|max:255|unique:customers',
             'password' => 'required|string|min:6',
             'newsletter' => 'boolean',
@@ -113,7 +113,7 @@ class CustomerController extends Controller
             'zip_code' => 'nullable|string|max:20',
             'complement' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:255',
-            'state' => ['nullable', 'string', 'max:2', Rule::enum(States::class)],
+            'state' => ['nullable', 'string', 'max:2', Rule::enum(State::class)],
             'username' => 'required|string|max:255|unique:customers,username,' . $customer->id,
             'password' => 'nullable|string|min:6',
             'newsletter' => 'boolean',

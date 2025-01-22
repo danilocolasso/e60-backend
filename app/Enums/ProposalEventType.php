@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ProposalEventTypes: string
+enum ProposalEventType: string
 {
     case DEFAULT = 'default';
     case DEFAULT_UNIT = 'default_unit';

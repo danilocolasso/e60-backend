@@ -1,8 +1,8 @@
 <?php
 
-use App\Enums\ProposalEventTypes;
+use App\Enums\ProposalEventType;
 use App\Enums\ProposalStatus;
-use App\Enums\ProposalTypes;
+use App\Enums\ProposalType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('monitor_id')->constrained('users')->cascadeOnDelete();
             $table->date('event_date')->nullable();
-            $table->enum('type', array_column(ProposalTypes::cases(), 'value'))->nullable();
+            $table->enum('type', array_column(ProposalType::cases(), 'value'))->nullable();
             $table->enum('status', array_column(ProposalStatus::cases(), 'value'))->nullable();
             $table->timestamp('return_date')->nullable();
             $table->text('notes')->nullable();
@@ -62,7 +62,7 @@ return new class extends Migration
             $table->string('event_time')->nullable();
             $table->string('product')->nullable();
             $table->timestamp('last_return_date')->nullable();
-            $table->enum('event_type', array_column(ProposalEventTypes::cases(), 'value'))->default(ProposalEventTypes::DEFAULT);
+            $table->enum('event_type', array_column(ProposalEventType::cases(), 'value'))->default(ProposalEventType::DEFAULT);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\State;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -23,7 +24,7 @@ return new class extends Migration {
             $table->string('zip_code')->nullable();
             $table->string('complement')->nullable();
             $table->string('city')->nullable();
-            $table->string('state')->nullable();
+            $table->enum('state', array_column(State::cases(), 'value'))->nullable();
             $table->string('username')->unique();
             $table->string('password');
             $table->boolean('newsletter')->default(false);

@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum ProposalTypes: string
+enum ProposalType: string
 {
     case CORPORATE = 'corporate';
     case PARTY = 'party';

@@ -3,10 +3,10 @@
 namespace Database\Factories;
 
 use App\Enums\BookingStatus;
-use App\Enums\BookingTypes;
-use App\Enums\DiscountTypes;
+use App\Enums\BookingType;
+use App\Enums\DiscountType;
 use App\Enums\NfeStatus;
-use App\Enums\PaymentMethods;
+use App\Enums\PaymentMethod;
 use App\Models\Branch;
 use App\Models\Coupon;
 use App\Models\Customer;
@@ -41,11 +41,20 @@ class BookingFactory extends Factory
             'due_date' => $this->faker->dateTimeBetween('now', '+1 week'),
             'status' => $this->faker->randomElement(BookingStatus::cases()),
             'language' => $this->faker->randomElement(['en', 'pt', 'es']),
-            'pagseguro_data' => ['example_key' => 'example_value'],
-            'paypal_data' => ['example_key' => 'example_value'],
-            'payment_method' => $this->faker->randomElement(PaymentMethods::cases()),
+            'pagseguro_data' => [
+                'id' => $this->faker->uuid,
+                'secret' => $this->faker->password,
+                'email' => $this->faker->companyEmail,
+                'token' => $this->faker->sha256,
+            ],
+            'paypal_data' => [
+                'user' => $this->faker->userName,
+                'password' => $this->faker->password,
+                'signature' => $this->faker->sha256,
+            ],
+            'payment_method' => $this->faker->randomElement(PaymentMethod::cases()),
             'payment_date' => null,
-            'type' => $this->faker->randomElement(BookingTypes::cases())->value,
+            'type' => $this->faker->randomElement(BookingType::cases())->value,
             'paid_amount' => $this->faker->randomFloat(2, 50, 500),
             'participant_quantity' => $this->faker->numberBetween(1, 10),
             'invoice_description' => $this->faker->sentence(),
@@ -94,7 +103,7 @@ class BookingFactory extends Factory
             'product' => $this->faker->word(),
             'amount_to_pay' => $this->faker->randomFloat(2, 50, 500),
             'is_giftcard' => $this->faker->boolean(),
-            'discount_type' => $this->faker->randomElement(DiscountTypes::cases())->value,
+            'discount_type' => $this->faker->randomElement(DiscountType::cases())->value,
         ];
     }
 }

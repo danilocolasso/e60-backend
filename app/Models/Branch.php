@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,46 +17,54 @@ class Branch extends Model
 
     protected $fillable = [
         'rps_id',
+        'user_id',
         'type',
         'name',
         'phone',
-        'is_active',
-        'street',
-        'number',
-        'complement',
-        'district',
-        'city_code',
-        'zip_code',
         'state',
-        'address',
-        'cnpj',
-        'municipal_registration',
-        'pagseguro_token',
-        'pagseguro_email',
-        'pagseguro_client_id',
-        'pagseguro_client_secret',
-        'paypal_user',
-        'paypal_password',
-        'paypal_signature',
-        'enotas_api_key',
-        'enotas_company_id',
-        'template_path_issue_report',
-        'progressive_discount_json',
-        'last_rps_number',
-        'rps_tax_rate',
-        'rps_service_code',
-        'rps_federal_service_code',
-        'rps_municipal_service_code',
-        'rps_municipal_taxation_code',
+        'pagseguro_data',
+        'paypal_data',
         'rps_format',
-        'rps_service_item_list',
+        'municipal_registration',
+        'cnpj',
+        'last_rps_number',
+        'rps_municipal_service_code',
+        'rps_trib_service_invoice',
+        'rps_regime_especial_trib_invoice',
         'rps_simple_national_optant',
-        'rps_special_trib_regime',
+        'rps_federal_service_code',
+        'rps_tax_rate',
+        'rps_code_service',
+        'rps_item_list_service',
+        'rps_municipal_taxation_code',
         'rps_service_trib_code',
-        'giftcard_person_limit',
         'giftcard_value_per_person',
+        'giftcard_person_limit',
         'is_advance_voucher',
+        'street',
+        'street_number',
+        'complement',
+        'neighborhood',
+        'city_id',
+        'zip_code',
+        'proposal_text',
+        'template_issue_report_path',
+        'progressive_discount_data',
+        'enotas_data',
+        'is_active',
     ];
+
+    protected $casts = [
+        'pagseguro_data' => 'array',
+        'paypal_data' => 'array',
+        'progressive_discount_data' => 'array',
+        'enotas_data' => 'array',
+    ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     public function users(): BelongsToMany
     {
@@ -80,5 +89,10 @@ class Branch extends Model
     public function coupons(): HasMany
     {
         return $this->hasMany(Coupon::class);
+    }
+
+    public function rpsBranch(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'rps_id');
     }
 }

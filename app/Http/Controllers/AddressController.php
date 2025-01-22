@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\States;
+use App\Enums\State;
 use Illuminate\Http\JsonResponse;
 
 class AddressController extends Controller
@@ -10,11 +10,11 @@ class AddressController extends Controller
     public function statesOptions(): JsonResponse
     {
         $options = array_map(
-            static fn(States $state) => [
+            static fn(State $state) => [
                 'value' => $state->value,
                 'label' => $state->name,
             ],
-            States::cases()
+            State::cases()
         );
 
         return response()->json($options);

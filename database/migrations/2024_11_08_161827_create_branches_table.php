@@ -1,11 +1,13 @@
 <?php
 
+use App\Enums\BranchType;
+use App\Enums\RpsFormat;
+use App\Enums\State;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,56 +15,43 @@ return new class extends Migration
     {
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('rps_id')->nullable();
-            $table->string('type', 20);
-            $table->string('name', 50);
-            $table->string('phone', 50);
-            $table->boolean('is_active')->default(false);
-            $table->string('street', 100)->nullable();
-            $table->string('number', 10)->nullable();
-            $table->string('complement')->nullable();
-            $table->string('district')->nullable();
-            $table->string('city_code', 20)->nullable();
-            $table->string('zip_code', 9)->nullable();
-            $table->string('state', 2)->nullable();
-            $table->string('address')->nullable();
-            $table->string('cnpj', 14)->nullable();
-            $table->string('municipal_registration', 8)->nullable();
-            $table->string('pagseguro_token', 255)->nullable();
-            $table->string('pagseguro_email', 100)->nullable();
-            $table->string('pagseguro_client_id', 100)->nullable();
-            $table->string('pagseguro_client_secret', 100)->nullable();
-            $table->string('paypal_user', 100)->nullable();
-            $table->string('paypal_password', 100)->nullable();
-            $table->string('paypal_signature', 255)->nullable();
-            $table->string('enotas_api_key', 250)->nullable();
-            $table->string('enotas_company_id', 250)->nullable();
-            $table->string('template_path_issue_report', 250)->nullable();
-            $table->longText('progressive_discount_json')->nullable();
-            $table->text('proposal_text')->nullable();
-            $table->integer('last_rps_number')->default(0);
-            $table->double('rps_tax_rate')->nullable();
-            $table->string('rps_service_code', 5)->nullable();
-            $table->string('rps_federal_service_code', 20)->nullable();
-            $table->string('rps_municipal_service_code', 20)->nullable();
-            $table->string('rps_municipal_taxation_code', 45)->nullable();
-            $table->string('rps_format', 20)->nullable();
-            $table->string('rps_service_item_list', 45)->nullable();
-            $table->boolean('rps_simple_national_optant')->default(false);
-            $table->string('rps_special_trib_regime', 2)->nullable();
-            $table->string('rps_service_trib_code', 2)->nullable();
-            $table->integer('giftcard_person_limit')->default(8);
-            $table->double('giftcard_value_per_person')->nullable();
+            $table->foreignId('rps_id')->nullable()->constrained('branches')->nullOnDelete();
+            $table->enum('type', array_column(BranchType::cases(), 'value'))->default(BranchType::ESCAPE);
+            $table->string('name');
+            $table->string('phone')->nullable();
+            $table->enum('state', array_column(State::cases(), 'value'))->nullable();
+            $table->json('pagseguro_data')->nullable();
+            $table->json('paypal_data')->nullable();
+            $table->enum('rps_format', array_column(RpsFormat::cases(), 'value'));
+            $table->integer('municipal_registration');
+            $table->string('cnpj', 18);
+            $table->unsignedBigInteger('last_rps_number');
+            $table->unsignedInteger('rps_municipal_service_code')->default(0);
+            $table->unsignedInteger('rps_trib_service_invoice')->default(0);
+            $table->unsignedInteger('rps_regime_especial_trib_invoice')->default(0);
+            $table->unsignedInteger('rps_simple_national_optant')->default(0);
+            $table->unsignedInteger('rps_federal_service_code')->default(0);
+            $table->unsignedInteger('rps_tax_rate')->default(0);
+            $table->unsignedInteger('rps_code_service')->default(0);
+            $table->unsignedInteger('rps_item_list_service')->default(0);
+            $table->unsignedInteger('rps_municipal_taxation_code')->default(0);
+            $table->unsignedInteger('rps_service_trib_code')->default(0);
+            $table->decimal('giftcard_value_per_person', 8, 2)->default(0);
+            $table->unsignedInteger('giftcard_person_limit')->default(1);
             $table->boolean('is_advance_voucher')->default(false);
-            $table->softDeletes();
+            $table->string('street');
+            $table->string('street_number')->nullable();
+            $table->string('complement')->nullable();
+            $table->string('neighborhood')->nullable();
+            $table->foreignId('city_id')->constrained('cities');
+            $table->string('zip_code', 9)->nullable();
+            $table->text('proposal_text')->nullable();
+            $table->string('template_issue_report_path')->nullable();
+            $table->json('progressive_discount_data')->nullable();
+            $table->json('enotas_data')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
-
-            $table->index('rps_id');
-            $table->index('name');
-
-            $table->index(['rps_service_code', 'rps_tax_rate']);
-
-//            $table->foreign('rps_id')->references('id')->on('rps')->onDelete('set null');
+            $table->softDeletes();
         });
     }
 

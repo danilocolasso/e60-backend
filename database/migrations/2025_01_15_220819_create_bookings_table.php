@@ -1,10 +1,10 @@
 <?php
 
 use App\Enums\BookingStatus;
-use App\Enums\BookingTypes;
-use App\Enums\DiscountTypes;
+use App\Enums\BookingType;
+use App\Enums\DiscountType;
 use App\Enums\NfeStatus;
-use App\Enums\PaymentMethods;
+use App\Enums\PaymentMethod;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -31,9 +31,9 @@ return new class extends Migration {
             $table->string('language')->nullable();
             $table->json('pagseguro_data')->nullable();
             $table->json('paypal_data')->nullable();
-            $table->enum('payment_method', array_column(PaymentMethods::cases(), 'value'))->default(PaymentMethods::CASH);
+            $table->enum('payment_method', array_column(PaymentMethod::cases(), 'value'))->default(PaymentMethod::CASH);
             $table->timestamp('payment_date')->nullable();
-            $table->enum('type', array_column(BookingTypes::cases(), 'value'))->default(BookingTypes::SINGLE);
+            $table->enum('type', array_column(BookingType::cases(), 'value'))->default(BookingType::SINGLE);
             $table->decimal('paid_amount', 10, 2)->nullable();
             $table->unsignedInteger('participant_quantity')->nullable();
             $table->text('invoice_description')->nullable();
@@ -82,7 +82,7 @@ return new class extends Migration {
             $table->string('product')->nullable();
             $table->decimal('amount_to_pay', 10, 2)->nullable();
             $table->boolean('is_giftcard')->default(false);
-            $table->enum('discount_type', array_column(DiscountTypes::cases(), 'value'))->nullable();
+            $table->enum('discount_type', array_column(DiscountType::cases(), 'value'))->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

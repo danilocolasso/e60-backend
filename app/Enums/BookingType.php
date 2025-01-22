@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum BookingTypes: string
+enum BookingType: string
 {
     case SINGLE = 'single';
     case CORPORATE = 'corporate';

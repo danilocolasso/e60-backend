@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum States: string
+enum State: string
 {
     case AC = 'AC';
     case AL = 'AL';

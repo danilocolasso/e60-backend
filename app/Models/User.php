@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\UserRoles;
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -32,7 +32,7 @@ class User extends Authenticatable
     ];
 
     protected $casts = [
-        'role' => UserRoles::class,
+        'role' => UserRole::class,
     ];
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Enums\UserRoles;
+use App\Enums\UserRole;
 use App\Models\Customer;
 use App\Models\User;
 use App\Traits\UserRoleTrait;
@@ -16,7 +16,7 @@ class CustomerPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $this->hasHigherOrEqualRole($user, UserRoles::BASIC);
+        return $this->hasHigherOrEqualRole($user, UserRole::BASIC);
     }
 
     /**
@@ -24,7 +24,7 @@ class CustomerPolicy
      */
     public function view(User $user, Customer $customer): bool
     {
-        return $this->hasHigherOrEqualRole($user, UserRoles::BASIC);
+        return $this->hasHigherOrEqualRole($user, UserRole::BASIC);
     }
 
     /**
@@ -32,7 +32,7 @@ class CustomerPolicy
      */
     public function create(User $user): bool
     {
-        return $this->hasHigherOrEqualRole($user, UserRoles::BASIC);
+        return $this->hasHigherOrEqualRole($user, UserRole::BASIC);
     }
 
     /**
@@ -40,7 +40,7 @@ class CustomerPolicy
      */
     public function update(User $user, Customer $customer): bool
     {
-        return $this->hasHigherOrEqualRole($user, UserRoles::BASIC);
+        return $this->hasHigherOrEqualRole($user, UserRole::BASIC);
     }
 
     /**
@@ -48,7 +48,7 @@ class CustomerPolicy
      */
     public function delete(User $user, Customer $customer): bool
     {
-        return $this->hasHigherOrEqualRole($user, UserRoles::BASIC);
+        return $this->hasHigherOrEqualRole($user, UserRole::BASIC);
     }
 
     /**
@@ -56,7 +56,7 @@ class CustomerPolicy
      */
     public function restore(User $user, Customer $customer): bool
     {
-        return $this->hasHigherOrEqualRole($user, UserRoles::BASIC);
+        return $this->hasHigherOrEqualRole($user, UserRole::BASIC);
     }
 
     /**
@@ -64,6 +64,6 @@ class CustomerPolicy
      */
     public function forceDelete(User $user, Customer $customer): bool
     {
-        return $this->hasHigherOrEqualRole($user, UserRoles::BASIC);
+        return $this->hasHigherOrEqualRole($user, UserRole::BASIC);
     }
 }

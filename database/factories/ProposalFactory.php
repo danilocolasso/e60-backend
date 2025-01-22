@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use App\Enums\ProposalEventTypes;
+use App\Enums\ProposalEventType;
 use App\Enums\ProposalStatus;
-use App\Enums\ProposalTypes;
+use App\Enums\ProposalType;
 use App\Models\Branch;
 use App\Models\Customer;
 use App\Models\User;
@@ -28,7 +28,7 @@ class ProposalFactory extends Factory
             'user_id' => User::inRandomOrder()->first()->id,
             'monitor_id' => User::inRandomOrder()->first()->id,
             'event_date' => $this->faker->dateTimeBetween('+1 week', '+1 month'),
-             'type' => $this->faker->randomElement(ProposalTypes::cases()),
+             'type' => $this->faker->randomElement(ProposalType::cases()),
              'status' => $this->faker->randomElement(ProposalStatus::cases()),
             'return_date' => $this->faker->dateTimeBetween('+1 month', '+2 months'),
             'notes' => $this->faker->paragraph(),
@@ -69,7 +69,7 @@ class ProposalFactory extends Factory
             'event_time' => $this->faker->time(),
             'product' => $this->faker->word(),
             'last_return_date' => null,
-             'event_type' => $this->faker->randomElement(ProposalEventTypes::cases())->value,
+             'event_type' => $this->faker->randomElement(ProposalEventType::cases())->value,
         ];
     }
 }
