@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BranchListResource;
 use App\Http\Resources\BranchResource;
 use App\Models\Branch;
 use App\Repositories\BranchRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
 
 class BranchController extends Controller
@@ -20,11 +22,11 @@ class BranchController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index(): ResourceCollection
     {
         $branches = $this->branchRepository->paginate(request()->all());
 
-        return response()->json($branches);
+        return BranchListResource::collection($branches);
     }
 
     /**

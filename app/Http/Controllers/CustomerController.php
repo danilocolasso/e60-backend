@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DTO\CustomerConsultCnpjDTO;
 use App\Enums\State;
+use App\Http\Resources\CustomerListResource;
 use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use App\Repositories\CustomerRepository;
@@ -11,6 +12,7 @@ use App\Rules\ValidCnpj;
 use App\Services\CnpjApiService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
@@ -27,13 +29,13 @@ class CustomerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): ResourceCollection
     {
         Gate::authorize('viewAny', Customer::class);
 
         $customers = $this->customerRepository->paginate($request->all());
 
-        return response()->json($customers);
+        return CustomerListResource::collection($customers);
     }
 
     /**

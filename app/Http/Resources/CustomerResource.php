@@ -33,10 +33,7 @@ class CustomerResource extends JsonResource
             'is_corporate' => $this->is_corporate,
             'branch_id' => $this->branch_id,
             'image_url' => $this->image_url,
-            'rd_station_data' => $this->rd_station_data,
             'contacts' => $this->contacts,
-            'created_at' => $this->created_at->format('d/m/Y'),
-            'updated_at' => $this->updated_at->format('d/m/Y'),
         ];
     }
 }

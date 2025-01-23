@@ -15,9 +15,16 @@ class Branch extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $hidden = [
+        'pagseguro_data',
+        'paypal_data',
+        'progressive_discount_data',
+        'enotas_data',
+    ];
+
     protected $fillable = [
         'rps_id',
-        'user_id',
+        'admin_user_id',
         'type',
         'name',
         'phone',
@@ -61,9 +68,9 @@ class Branch extends Model
         'enotas_data' => 'array',
     ];
 
-    public function user(): BelongsTo
+    public function admin(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'admin_user_id');
     }
 
     public function users(): BelongsToMany
@@ -91,8 +98,13 @@ class Branch extends Model
         return $this->hasMany(Coupon::class);
     }
 
-    public function rpsBranch(): BelongsTo
+    public function city(): BelongsTo
     {
-        return $this->belongsTo(self::class, 'rps_id');
+        return $this->belongsTo(City::class);
+    }
+
+    public function rps(): BelongsTo
+    {
+        return $this->belongsTo(self::class);
     }
 }

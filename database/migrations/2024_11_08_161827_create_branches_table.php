@@ -16,6 +16,7 @@ return new class extends Migration {
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
             $table->foreignId('rps_id')->nullable()->constrained('branches')->nullOnDelete();
+            $table->foreignId('admin_user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->enum('type', array_column(BranchType::cases(), 'value'))->default(BranchType::ESCAPE);
             $table->string('name');
             $table->string('phone')->nullable();

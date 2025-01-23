@@ -21,6 +21,7 @@ class Customer extends Model
     protected $hidden = [
         'password',
         'deleted_at',
+        'rd_station_data',
     ];
 
     protected $fillable = [

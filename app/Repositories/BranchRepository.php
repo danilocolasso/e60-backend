@@ -24,7 +24,6 @@ class BranchRepository
         if ($filters['query']) {
             $query->where(function ($query) use ($filters) {
                 $query->where('name', 'ilike', "%{$filters['query']}%");
-                // TODO: Add more fields to search
             });
         }
 

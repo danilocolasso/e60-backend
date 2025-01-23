@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class BranchListResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,11 +17,12 @@ class UserResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'username' => $this->username,
-            'email' => $this->email,
-            'role' => $this->role,
-            'management_report_show' => $this->management_report_show,
-            'branches' => $this->branches->pluck('id'),
+            'phone' => $this->phone,
+            'rps' => $this->rps?->name,
+            'type' => $this->type,
+            'admin' => $this->admin?->name,
+            'is_advance_voucher' => $this->is_advance_voucher,
+            'is_active' => $this->is_active,
         ];
     }
 }
