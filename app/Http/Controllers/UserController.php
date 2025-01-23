@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserListResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
@@ -26,7 +28,6 @@ class UserController extends Controller
     public function index(Request $request): ResourceCollection
     {
         Gate::authorize('viewAny', User::class);
-
         $users = $this->userRepository->paginate($request->all());
 
         return UserListResource::collection($users);
@@ -35,21 +36,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): JsonResponse
+    public function store(StoreUserRequest $request): JsonResponse
     {
-        Gate::authorize('create', User::class);
-
-        $data = $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'username' => 'required|string',
-            'password' => 'required|string',
-            'password_confirmation' => 'required|string',
-            'role' => 'required|string',
-            'branches' => 'array',
-            'management_report_show' => 'boolean',
-        ]);
-
+        $data = $request->validated();
         $user = $this->userRepository->create($data);
 
         return response()->json($user);
@@ -78,21 +67,9 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user): JsonResponse
+    public function update(UpdateUserRequest $request, User $user): JsonResponse
     {
-        Gate::authorize('update', $user);
-
-        $data = $request->validate([
-            'name' => 'string',
-            'email' => 'email',
-            'username' => 'string',
-            'password' => 'nullable|string',
-            'password_confirmation' => 'nullable|string|required_with:password|string',
-            'role' => 'required|string',
-            'branches' => 'array',
-            'management_report_show' => 'boolean',
-        ]);
-
+        $data = $request->validated();
         $user = $this->userRepository->update($user, $data);
 
         return response()->json($user);
@@ -104,7 +81,6 @@ class UserController extends Controller
     public function destroy(User $user): Response
     {
         Gate::authorize('delete', $user);
-
         $user->delete();
 
         return response()->noContent();
