@@ -85,4 +85,12 @@ class UserController extends Controller
 
         return response()->noContent();
     }
+
+    public function options(): JsonResponse
+    {
+        Gate::authorize('viewAny', User::class);
+        $options = $this->userRepository->options();
+
+        return response()->json($options);
+    }
 }

@@ -18,9 +18,9 @@ class BranchListResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'phone' => $this->phone,
-            'rps' => $this->rps?->name,
+            'rps' => $this->rps,
             'type' => $this->type,
-            'admin' => $this->admin?->name,
+            'admin' => $this->admin,
             'is_advance_voucher' => $this->is_advance_voucher,
             'is_active' => $this->is_active,
         ];

@@ -4,8 +4,10 @@ namespace Database\Factories;
 
 use App\Enums\BranchType;
 use App\Enums\RpsFormat;
+use App\Enums\RpsSimplesNationalOptant;
+use App\Enums\RpsSpecialTaxRegimeInvoice;
+use App\Enums\RpsTaxServiceInvoice;
 use App\Enums\State;
-use App\Models\Branch;
 use App\Models\City;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -27,10 +29,9 @@ class BranchFactory extends Factory
             'phone' => $this->faker->phoneNumber,
             'state' => $this->faker->randomElement(State::cases()),
             'pagseguro_data' => [
-                'id' => $this->faker->uuid,
-                'secret' => $this->faker->password,
                 'email' => $this->faker->companyEmail,
                 'token' => $this->faker->sha256,
+                'key' => $this->faker->sha256,
             ],
             'paypal_data' => [
                 'user' => $this->faker->userName,
@@ -39,34 +40,30 @@ class BranchFactory extends Factory
             ],
             'rps_format' => $this->faker->randomElement(RpsFormat::cases()),
             'municipal_registration' => $this->faker->numerify('#########'),
-            'cnpj' =>  only_numbers($this->faker->cnpj()),
-            'last_rps_number' => $this->faker->numberBetween(1, 100000),
+            'cnpj' => only_numbers($this->faker->cnpj()),
+            'rps_last_number' => $this->faker->numberBetween(1, 100000),
             'rps_municipal_service_code' => $this->faker->numberBetween(1000, 9999),
-            'rps_trib_service_invoice' => $this->faker->numberBetween(1000, 9999),
-            'rps_regime_especial_trib_invoice' => $this->faker->numberBetween(1000, 9999),
-            'rps_simple_national_optant' => $this->faker->boolean ? 1 : 0,
+            'rps_tax_service_invoice' => $this->faker->randomElement(RpsTaxServiceInvoice::cases()),
+            'rps_special_tax_regime_invoice' => $this->faker->randomElement(RpsSpecialTaxRegimeInvoice::cases()),
+            'rps_simple_national_optant' => $this->faker->randomElement(RpsSimplesNationalOptant::cases()),
             'rps_federal_service_code' => $this->faker->numberBetween(1000, 9999),
             'rps_tax_rate' => $this->faker->numberBetween(0, 100),
             'rps_code_service' => $this->faker->numberBetween(1000, 9999),
             'rps_item_list_service' => $this->faker->numberBetween(1000, 9999),
             'rps_municipal_taxation_code' => $this->faker->numberBetween(1000, 9999),
-            'rps_service_trib_code' => $this->faker->numberBetween(1000, 9999),
             'giftcard_value_per_person' => $this->faker->randomFloat(2, 0, 1000),
             'giftcard_person_limit' => $this->faker->numberBetween(1, 10),
             'is_advance_voucher' => $this->faker->boolean,
-            'street' => $this->faker->streetName,
-            'street_number' => $this->faker->buildingNumber,
-            'complement' => $this->faker->optional()->secondaryAddress,
-            'neighborhood' => $this->faker->word,
+            'address' => $this->faker->address(),
             'city_id' => City::inRandomOrder()->first()->id,
             'zip_code' => $this->faker->postcode,
             'proposal_text' => $this->faker->optional()->paragraph,
             'template_issue_report_path' => $this->faker->optional()->filePath,
-            'enotas_data' => json_encode([
+            'enotas_data' => [
                 'api_key' => $this->faker->sha256,
                 'company_id' => $this->faker->uuid,
-            ]),
-            'is_active' => true,
+            ],
+            'is_active' => $this->faker->boolean,
         ];
     }
 }

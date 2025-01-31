@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Models\Customer;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Log;
 
 class CustomerRepository
 {
@@ -27,7 +26,6 @@ class CustomerRepository
                     ->orWhere('email', 'ilike', "%{$filters['query']}%")
                     ->orWhere('document_number', 'ilike', "%{$filters['query']}%")
                     ->orWhere('phone', 'ilike', "%{$filters['query']}%");
-                // TODO only numbers in document_number and phone on database
             });
         }
 

@@ -6,16 +6,18 @@ RESET=\033[0m
 install build:
 	@echo "$(YELLOW)Creating container network...$(RESET)"
 	@docker network create --driver bridge app-network || true
+	@echo "$(YELLOW)Copying env files...$(RESET)"
+	@cp .env.example .env
 	@echo "$(YELLOW)Building containers...$(RESET)"
 	@docker compose up -d --build
 	@echo "$(YELLOW)Installing backend dependencies...$(RESET)"
 	@docker compose exec app composer install
-	@echo "$(YELLOW)Copying env files...$(RESET)"
-	@docker compose exec app cp .env.example .env
 	@echo "$(YELLOW)Generating app key...$(RESET)"
 	@docker compose exec app php artisan key:generate --ansi
 	@echo "$(YELLOW)Setting up permissions...$(RESET)"
 	@docker compose exec app chmod -R 777 storage bootstrap/cache
+	@echo "$(YELLOW)Setting up database...$(RESET)"
+	@${MAKE} migrate
 
 up start:
 	@echo "$(YELLOW)Starting containers...$(RESET)"

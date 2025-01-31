@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\User;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class UserRepository
 {
@@ -56,5 +57,15 @@ class UserRepository
         }
 
         return $user;
+    }
+
+    public function options(): Collection
+    {
+        return User::all()->map(function (User $user) {
+            return [
+                'value' => $user->id,
+                'label' => $user->name,
+            ];
+        });
     }
 }

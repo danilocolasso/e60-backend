@@ -12,9 +12,9 @@ class BranchSeeder extends Seeder
      */
     public function run(): void
     {
-        Branch::factory()->count(5)->create();
+        Branch::factory()->count(12)->create();
 
-        Branch::inRandomOrder()->take(3)->get()->each(function (Branch $branch): void {
+        Branch::inRandomOrder()->take(6)->get()->each(function (Branch $branch): void {
             $branch->rps_id = Branch::where('id', '!=', $branch->id)->inRandomOrder()->first()->id;
             $branch->save();
         });
