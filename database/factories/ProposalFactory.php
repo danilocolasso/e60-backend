@@ -26,7 +26,7 @@ class ProposalFactory extends Factory
             'branch_id' => Branch::inRandomOrder()->first()->id,
             'customer_id' => Customer::inRandomOrder()->first()->id,
             'user_id' => User::inRandomOrder()->first()->id,
-            'monitor_id' => User::inRandomOrder()->first()->id,
+            'monitor_user_id' => User::inRandomOrder()->first()->id,
             'event_date' => $this->faker->dateTimeBetween('+1 week', '+1 month'),
              'type' => $this->faker->randomElement(ProposalType::cases()),
              'status' => $this->faker->randomElement(ProposalStatus::cases()),

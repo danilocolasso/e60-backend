@@ -22,7 +22,7 @@ class Booking extends Model
         'branch_id',
         'rps_id',
         'user_id',
-        'monitor_id',
+        'monitor_user_id',
         'participants',
         'amount',
         'due_date',
@@ -124,9 +124,9 @@ class Booking extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function monitor(): BelongsTo
+    public function monitorUser(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'monitor_user_id');
     }
 
     public function coupon(): HasOne

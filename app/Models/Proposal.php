@@ -15,7 +15,7 @@ class Proposal extends Model
         'branch_id',
         'customer_id',
         'user_id',
-        'monitor_id',
+        'monitor_user_id',
         'event_date',
         'type',
         'status',
@@ -76,8 +76,8 @@ class Proposal extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function monitor(): BelongsTo
+    public function monitorUser(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'monitor_id');
+        return $this->belongsTo(User::class, 'monitor_user_id');
     }
 }

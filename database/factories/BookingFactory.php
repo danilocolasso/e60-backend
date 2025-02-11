@@ -35,7 +35,7 @@ class BookingFactory extends Factory
             'branch_id' => Branch::inRandomOrder()->first()->id,
             'rps_id' => Rps::inRandomOrder()->first()->id,
             'user_id' => User::inRandomOrder()->first()->id,
-            'monitor_id' => User::inRandomOrder()->first()->id,
+            'monitor_user_id' => User::inRandomOrder()->first()->id,
             'participants' => $this->faker->numberBetween(1, 10),
             'amount' => $this->faker->randomFloat(2, 50, 500),
             'due_date' => $this->faker->dateTimeBetween('now', '+1 week'),

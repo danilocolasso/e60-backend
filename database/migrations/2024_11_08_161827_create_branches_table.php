@@ -21,12 +21,12 @@ return new class extends Migration {
             $table->foreignId('rps_id')->nullable()->constrained('branches')->nullOnDelete();
             $table->foreignId('admin_user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->enum('type', array_column(BranchType::cases(), 'value'))->default(BranchType::ESCAPE);
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('phone')->nullable();
             $table->enum('state', array_column(State::cases(), 'value'))->nullable();
             $table->json('pagseguro_data')->nullable();
             $table->json('paypal_data')->nullable();
-            $table->enum('rps_format', array_column(RpsFormat::cases(), 'value'));
+            $table->enum('rps_format', array_column(RpsFormat::cases(), 'value'))->nullable()->default(RpsFormat::PAULISTA);
             $table->integer('municipal_registration');
             $table->string('cnpj', 18);
             $table->unsignedBigInteger('rps_last_number');

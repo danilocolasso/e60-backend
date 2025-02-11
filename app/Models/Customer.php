@@ -39,6 +39,7 @@ class Customer extends Model
         'username',
         'password',
         'phone',
+        'cellphone',
         'newsletter',
         'is_corporate',
         'branch_id',

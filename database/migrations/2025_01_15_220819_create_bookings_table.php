@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->foreignId('branch_id')->nullable()->constrained('branches')->nullOnDelete();
             $table->foreignId('rps_id')->constrained()->nullOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('monitor_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('monitor_user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->unsignedInteger('participants')->nullable();
             $table->decimal('amount', 10, 2)->nullable();
             $table->date('due_date')->nullable();

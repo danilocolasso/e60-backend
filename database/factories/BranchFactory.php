@@ -25,7 +25,7 @@ class BranchFactory extends Factory
     {
         return [
             'type' => $this->faker->randomElement(BranchType::cases()),
-            'name' => $this->faker->company,
+            'name' => $this->faker->unique()->company,
             'phone' => $this->faker->phoneNumber,
             'state' => $this->faker->randomElement(State::cases()),
             'pagseguro_data' => [

@@ -16,8 +16,9 @@ return new class extends Migration {
             $table->string('name');
             $table->string('document_number')->nullable();
             $table->date('birth_date')->nullable();
-            $table->string('email');
+            $table->string('email')->unique()->nullable();
             $table->string('phone')->nullable();
+            $table->string('cellphone')->nullable();
             $table->string('street')->nullable();
             $table->string('street_number')->nullable();
             $table->string('neighborhood')->nullable();
@@ -25,11 +26,10 @@ return new class extends Migration {
             $table->string('complement')->nullable();
             $table->string('city')->nullable();
             $table->enum('state', array_column(State::cases(), 'value'))->nullable();
-            $table->string('username')->unique();
             $table->string('password');
             $table->boolean('newsletter')->default(false);
             $table->boolean('is_corporate')->default(false);
-            $table->foreignId('branch_id')->constrained('branches')->cascadeOnDelete();
+            $table->foreignId('branch_id')->nullable()->constrained('branches')->nullOnDelete();
             $table->string('image_url')->nullable();
             $table->json('rd_station_data')->nullable();
             $table->timestamps();
