@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('branch_id')->constrained('branches')->cascadeOnDelete();
             $table->foreignId('customer_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('monitor_user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('monitor_user_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->date('event_date')->nullable();
             $table->enum('type', array_column(ProposalType::cases(), 'value'))->nullable();
             $table->enum('status', array_column(ProposalStatus::cases(), 'value'))->nullable();
@@ -62,7 +62,7 @@ return new class extends Migration
             $table->string('event_time')->nullable();
             $table->string('product')->nullable();
             $table->timestamp('last_return_date')->nullable();
-            $table->enum('event_type', array_column(ProposalEventType::cases(), 'value'))->default(ProposalEventType::DEFAULT);
+            $table->enum('event_type', array_column(ProposalEventType::cases(), 'value'))->nullable()->default(ProposalEventType::DEFAULT);
             $table->softDeletes();
             $table->timestamps();
         });
