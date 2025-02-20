@@ -21,7 +21,7 @@ return new class extends Migration {
             $table->foreignId('room_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('proposal_id')->nullable()->constrained('proposals')->nullOnDelete();
             $table->foreignId('branch_id')->nullable()->constrained('branches')->nullOnDelete();
-            $table->foreignId('rps_id')->constrained()->nullOnDelete();
+            $table->foreignId('rps_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('monitor_user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->unsignedInteger('participants')->nullable();

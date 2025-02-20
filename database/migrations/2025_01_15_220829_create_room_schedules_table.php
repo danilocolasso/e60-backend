@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('room_schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('branch_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('branch_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('room_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('booking_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('booking_id')->nullable()->constrained()->cascadeOnDelete();
             $table->dateTime('start_time');
             $table->dateTime('end_time')->nullable();
-            $table->boolean('is_blocked')->default(false);
             $table->decimal('value', 10, 2)->default(0);
             $table->unsignedInteger('participants')->default(0);
-            $table->text('reason')->nullable();
+            $table->boolean('is_blocked')->default(false);
+            $table->text('block_reason')->nullable();
+            $table->foreignId('blocked_by_user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->softDeletes();
             $table->timestamps();
         });
