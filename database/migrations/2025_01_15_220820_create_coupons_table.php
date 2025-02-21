@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('coupons', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
-            $table->decimal('discount', 5, 2)->nullable();
-            $table->decimal('fixed_amount_per_person', 8, 2)->nullable();
-            $table->date('valid_until')->nullable();
-            $table->string('partner_name')->nullable();
             $table->foreignId('booking_id')->nullable()->constrained();
             $table->foreignId('branch_id')->nullable()->constrained('branches')->nullOnDelete();
             $table->foreignId('room_id')->nullable()->constrained();
             $table->foreignId('customer_id')->nullable()->constrained();
-            $table->time('start_time')->nullable();
-            $table->time('end_time')->nullable();
+            $table->string('code');
+            $table->decimal('discount', 5, 2)->default(0);
+            $table->decimal('fixed_amount_per_person', 8, 2)->default(0);
+            $table->date('valid_until')->nullable();
+            $table->string('partner_name');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->boolean('is_valid_sunday')->default(false);
             $table->boolean('is_valid_monday')->default(false);
             $table->boolean('is_valid_tuesday')->default(false);
