@@ -4,7 +4,6 @@ namespace Database\Factories;
 
 use App\Models\Achievement;
 use App\Models\Branch;
-use App\Models\Coupon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

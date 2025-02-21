@@ -64,11 +64,6 @@ class Customer extends Model
         return $this->HasMany(CustomerContact::class);
     }
 
-    public function coupons(): BelongsToMany
-    {
-        return $this->BelongsToMany(Coupon::class)->withTimestamps();
-    }
-
     public function achievements(): BelongsToMany
     {
         return $this->belongsToMany(Achievement::class)->withTimestamps();

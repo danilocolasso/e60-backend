@@ -43,12 +43,4 @@ class CouponFactory extends Factory
             'booking_end_date' => $this->faker->dateTimeBetween('now', '+1 month'),
         ];
     }
-
-    public function configure(): self
-    {
-        return $this->afterCreating(function ($coupon) {
-            $customers = Customer::inRandomOrder()->take(1, 3)->pluck('id');
-            $coupon->customers()->attach($customers);
-        });
-    }
 }

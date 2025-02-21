@@ -51,9 +51,4 @@ class Coupon extends Model
     {
         return $this->belongsTo(Room::class);
     }
-
-    public function customers(): BelongsToMany
-    {
-        return $this->BelongsToMany(Customer::class)->withTimestamps();
-    }
 }
