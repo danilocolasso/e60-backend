@@ -16,7 +16,7 @@ services:
       - ./:/var/www/html
       - ./storage/logs/laravel:/var/log/laravel
     depends_on:
-      - database
+      - db
       - redis
     networks:
       - app-network
@@ -35,7 +35,7 @@ services:
     networks:
       - app-network
 
-  database:
+  db:
     image: postgres:15
     container_name: e60_database
     restart: unless-stopped
