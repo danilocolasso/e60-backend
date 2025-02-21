@@ -13,6 +13,8 @@ return new class extends Migration {
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('branch_id')->nullable()->constrained('branches')->nullOnDelete();
+            $table->unsignedBigInteger('invite_code')->nullable();
             $table->string('name');
             $table->string('document_number')->nullable();
             $table->date('birth_date')->nullable();
@@ -29,7 +31,6 @@ return new class extends Migration {
             $table->string('password');
             $table->boolean('newsletter')->default(false);
             $table->boolean('is_corporate')->default(false);
-            $table->foreignId('branch_id')->nullable()->constrained('branches')->nullOnDelete();
             $table->string('image_url')->nullable();
             $table->json('rd_station_data')->nullable();
             $table->timestamps();
