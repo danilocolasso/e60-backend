@@ -31,7 +31,8 @@ class BranchResource extends JsonResource
             'pagseguro' => [
                 'email' => $this->pagseguro_data['email'] ?? null,
                 'token' => $this->pagseguro_data['token'] ?? null,
-                'key' => $this->pagseguro_data['key'] ?? null,
+                'client_id' => $this->pagseguro_data['client_id'] ?? null,
+                'client_secret' => $this->pagseguro_data['client_secret'] ?? null,
             ],
             'paypal' => [
                 'user' => $this->paypal_data['user'] ?? null,
