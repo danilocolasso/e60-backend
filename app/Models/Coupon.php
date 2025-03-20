@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\CouponUsageType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -17,11 +17,8 @@ class Coupon extends Model
     protected $fillable = [
         'code',
         'discount',
-        'fixed_amount_per_person',
-        'booking_id',
-        'branch_id',
-        'room_id',
-        'customer_id',
+        'usage_type',
+        'quantity',
         'valid_until',
         'start_time',
         'end_time',
@@ -37,18 +34,57 @@ class Coupon extends Model
         'booking_end_date',
     ];
 
-    public function booking(): BelongsTo
+    protected $casts = [
+        'usage_type' => CouponUsageType::class,
+    ];
+
+    public function use(Customer $customer): void
     {
-        return $this->belongsTo(Booking::class);
+        switch ($this->usage_type) {
+            case CouponUsageType::Unique:
+                    if ($this->customers()->exists()) {
+                        throw new \Exception('Este cupom já foi utilizado.');
+                    }
+                break;
+
+            case CouponUsageType::UniquePerCustomer:
+                if ($this->customers()->where('id', $customer->id)->exists()) {
+                    throw new \Exception('Este cupom já foi utilizado por este cliente.');
+                }
+                break;
+
+            case CouponUsageType::Limited:
+                if ($this->customers()->count() >= $this->quantity) {
+                    throw new \Exception('Este cupom atingiu o limite de utilização.');
+                }
+                break;
+        }
+
+        $this->customers()->attach($customer);
     }
 
-    public function branch(): BelongsTo
+    public function bookings()
     {
-        return $this->belongsTo(Branch::class);
+        return $this->hasMany(Booking::class);
     }
 
-    public function room(): BelongsTo
+    public function branches()
     {
-        return $this->belongsTo(Room::class);
+        return $this->rooms()
+            ->with('branch')
+            ->get()
+            ->pluck('branch')
+            ->unique('id')
+            ->values();
+    }
+
+    public function customers(): BelongsToMany
+    {
+        return $this->belongsToMany(Customer::class)->withTimestamps();
+    }
+
+    public function rooms(): BelongsToMany
+    {
+        return $this->belongsToMany(Room::class)->withTimestamps();
     }
 }

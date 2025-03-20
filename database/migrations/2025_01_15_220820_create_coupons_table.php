@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\CouponUsageType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,17 +14,14 @@ return new class extends Migration
     {
         Schema::create('coupons', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('booking_id')->nullable()->constrained();
-            $table->foreignId('branch_id')->nullable()->constrained('branches')->nullOnDelete();
-            $table->foreignId('room_id')->nullable()->constrained();
-            $table->foreignId('customer_id')->nullable()->constrained();
             $table->string('code');
             $table->decimal('discount', 5, 2)->default(0);
-            $table->decimal('fixed_amount_per_person', 8, 2)->default(0);
+            $table->enum('usage_type', array_column(CouponUsageType::cases(), 'value'))->default(CouponUsageType::Unlimited);
+            $table->unsignedInteger('quantity')->nullable();
             $table->date('valid_until')->nullable();
-            $table->string('partner_name');
             $table->time('start_time');
             $table->time('end_time');
+            $table->string('partner_name');
             $table->boolean('is_valid_sunday')->default(false);
             $table->boolean('is_valid_monday')->default(false);
             $table->boolean('is_valid_tuesday')->default(false);

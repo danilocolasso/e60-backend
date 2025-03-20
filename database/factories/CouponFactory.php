@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Booking;
-use App\Models\Branch;
+use App\Enums\CouponUsageType;
+use App\Models\Coupon;
 use App\Models\Customer;
 use App\Models\Room;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,14 +20,19 @@ class CouponFactory extends Factory
      */
     public function definition(): array
     {
+        $usageType = $this->faker->randomElement(CouponUsageType::cases());
+        $quantity = in_array($usageType, [
+            CouponUsageType::Unlimited,
+            CouponUsageType::Unique,
+        ], true)
+            ? null
+            : $this->faker->numberBetween(1, 50);
+
         return [
             'code' => strtoupper($this->faker->bothify('CUP-####')),
             'discount' => $this->faker->randomFloat(2, 0, 50),
-            'fixed_amount_per_person' => $this->faker->randomFloat(2, 0, 100),
-            'booking_id' => Booking::inRandomOrder()->first()->id,
-            'branch_id' => Branch::inRandomOrder()->first()->id,
-            'room_id' => Room::inRandomOrder()->first()->id,
-            'customer_id' => Customer::inRandomOrder()->first()->id,
+            'usage_type' => $usageType,
+            'quantity' => $quantity,
             'valid_until' => $this->faker->dateTimeBetween('now', '+1 month'),
             'start_time' => $this->faker->time('H:i:s'),
             'end_time' => $this->faker->time('H:i:s'),
@@ -42,5 +47,38 @@ class CouponFactory extends Factory
             'booking_start_date' => $this->faker->dateTimeBetween('-1 month', 'now'),
             'booking_end_date' => $this->faker->dateTimeBetween('now', '+1 month'),
         ];
+    }
+
+    public function configure(): self
+    {
+        return $this->afterCreating(function (Coupon $coupon): void {
+            $customers = Customer::inRandomOrder()->take(10, 25)->get();
+            $rooms = Room::inRandomOrder()->take(5, 15)->get();
+
+            $coupon->rooms()->attach($rooms);
+
+            switch ($coupon->usage_type) {
+                case CouponUsageType::Unique:
+                    $customer = $customers->random(1);
+                    $coupon->customers()->attach($customer);
+                    break;
+
+                case CouponUsageType::UniquePerCustomer:
+                    $customerQuantity = $this->faker->numberBetween(1, $customers->count());
+                    $selectedCustomers = $customers->random($customerQuantity);
+                    $coupon->customers()->attach($selectedCustomers);
+                    break;
+
+                case CouponUsageType::Limited:
+                    $customerQuantity = $this->faker->numberBetween(1, min($coupon->quantity, $customers->count()));
+                    $selectedCustomers = $customers->random($customerQuantity);
+                    $coupon->customers()->attach($selectedCustomers);
+                    break;
+
+                case CouponUsageType::Unlimited:
+                    $coupon->customers()->attach($customers);
+                    break;
+            }
+        });
     }
 }
