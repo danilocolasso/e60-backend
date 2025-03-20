@@ -46,7 +46,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - .docker/dbdata:/var/lib/postgresql/data
+      - e60_database_data:/var/lib/postgresql/data
     networks:
       - app-network
 
@@ -65,7 +65,7 @@ services:
       - app-network
 
 volumes:
-  dbdata:
+    e60_database_data:
 
 networks:
   app-network:
