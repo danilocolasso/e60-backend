@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\CouponDiscountType;
 use App\Enums\CouponUsageType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('code');
             $table->decimal('discount', 5, 2)->default(0);
+            $table->enum('discount_type', array_column(CouponDiscountType::cases(), 'value'))->default(CouponDiscountType::Fixed);
             $table->enum('usage_type', array_column(CouponUsageType::cases(), 'value'))->default(CouponUsageType::Unlimited);
             $table->unsignedInteger('quantity')->nullable();
             $table->date('valid_until')->nullable();

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\CouponDiscountType;
 use App\Enums\CouponUsageType;
 use App\Models\Coupon;
 use App\Models\Customer;
@@ -31,11 +32,12 @@ class CouponFactory extends Factory
         return [
             'code' => strtoupper($this->faker->bothify('CUP-####')),
             'discount' => $this->faker->randomFloat(2, 0, 50),
+            'discount_type' => $this->faker->randomElement(CouponDiscountType::cases()),
             'usage_type' => $usageType,
             'quantity' => $quantity,
             'valid_until' => $this->faker->dateTimeBetween('now', '+1 month'),
-            'start_time' => $this->faker->time('H:i:s'),
-            'end_time' => $this->faker->time('H:i:s'),
+            'start_time' => $this->faker->time(),
+            'end_time' => $this->faker->time(),
             'partner_name' => $this->faker->company(),
             'is_valid_sunday' => $this->faker->boolean(),
             'is_valid_monday' => $this->faker->boolean(),
@@ -70,7 +72,8 @@ class CouponFactory extends Factory
                     break;
 
                 case CouponUsageType::Limited:
-                    $customerQuantity = $this->faker->numberBetween(1, min($coupon->quantity, $customers->count()));
+                    $max = min($coupon->quantity, $customers->count());
+                    $customerQuantity = $this->faker->numberBetween(1, $max);
                     $selectedCustomers = $customers->random($customerQuantity);
                     $coupon->customers()->attach($selectedCustomers);
                     break;
