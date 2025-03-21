@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Enums\Weekday;
 use App\Models\Coupon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
@@ -35,6 +36,19 @@ class CouponRepository
     {
         // TODO: attach relationships
 
+        $this->arrangeValidDays($data);
+
         return Coupon::create($data);
+    }
+
+    private function arrangeValidDays(array &$data): void
+    {
+        $validDays = $data['valid_days'];
+        unset($data['valid_days']);
+
+        foreach (Weekday::cases() as $day) {
+            $fieldName = 'is_valid_' . $day->value;
+            $data[$fieldName] = in_array($day->value, $validDays);
+        }
     }
 }
