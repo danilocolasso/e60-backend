@@ -75,7 +75,7 @@ class CouponController extends Controller
      */
     public function destroy(Coupon $coupon): Response
     {
-        Gate::authorize('delete', Coupon::class);
+        Gate::authorize('delete', $coupon);
 
         $coupon->delete();
 
