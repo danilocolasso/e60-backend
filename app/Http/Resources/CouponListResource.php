@@ -17,6 +17,7 @@ class CouponListResource extends JsonResource
         return [
             'id' => $this->id,
             'code' => $this->code,
+            'discount' => $this->discount,
             'branches' => $this->branches()->pluck('name'),
             'quantity' => $this->quantity,
             'usage_type' => $this->usage_type,
