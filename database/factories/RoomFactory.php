@@ -18,9 +18,9 @@ class RoomFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word(),
-            'name_en' => $this->faker->word(),
-            'name_es' => $this->faker->word(),
+            'name' => $this->faker->colorName(),
+            'name_en' => $this->faker->colorName(),
+            'name_es' => $this->faker->colorName(),
             'image_url' => $this->faker->imageUrl(),
             'cover_url' => $this->faker->imageUrl(),
             'icon_url' => $this->faker->imageUrl(),

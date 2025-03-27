@@ -95,6 +95,20 @@ class BranchController extends Controller
         return response()->json($options);
     }
 
+    public function roomsOptions(Branch $branch): JsonResponse
+    {
+        Gate::authorize('view', $branch);
+
+        $options = $branch->rooms->map(
+            static fn($room) => [
+                'value' => $room->id,
+                'label' => $room->name,
+            ]
+        );
+
+        return response()->json($options);
+    }
+
     public function typeOptions(): JsonResponse
     {
         Gate::authorize('viewAny', Branch::class);

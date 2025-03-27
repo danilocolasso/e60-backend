@@ -4,7 +4,11 @@ namespace App\Repositories;
 
 use App\Enums\Weekday;
 use App\Models\Coupon;
+use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CouponRepository
 {
@@ -32,13 +36,24 @@ class CouponRepository
         return $query->paginate($perPage, ['*'], 'page', $currentPage);
     }
 
+    /**
+     * @throws Exception
+     */
     public function store(array $data): Coupon
     {
-        // TODO: attach relationships
+        try {
+            return DB::transaction(function () use ($data) {
+                $this->arrangeValidDays($data);
 
-        $this->arrangeValidDays($data);
+                $coupon = Coupon::create($data);
 
-        return Coupon::create($data);
+                $coupon->rooms()->sync(Arr::flatten($data['rooms']));
+
+                return $coupon;
+            });
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
     }
 
     private function arrangeValidDays(array &$data): void

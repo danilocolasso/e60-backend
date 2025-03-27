@@ -28,7 +28,7 @@ class StoreCouponRequest extends FormRequest
     {
         return [
             'code' => 'required|string|min:3|max:255',
-            'discount' => 'required|numeric|min:0|max:100',
+            'discount' => 'required|numeric|min:0',
             'discount_type' => ['required', 'string', Rule::in(CouponDiscountType::cases())],
             'usage_type' => ['required', 'string', Rule::in(CouponUsageType::cases())],
             'quantity' => [
@@ -49,6 +49,9 @@ class StoreCouponRequest extends FormRequest
             'valid_days.*' => [Rule::in(Weekday::cases())],
             'booking_start_date' => 'nullable|date',
             'booking_end_date' => 'nullable|date',
+            'rooms' => 'array',
+            'rooms.*' => 'array',
+            'rooms.*.*' => 'exists:rooms,id',
         ];
     }
 }
