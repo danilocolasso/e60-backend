@@ -19,7 +19,6 @@ class CouponResource extends JsonResource
             'code' => $this->code,
             'discount' => $this->discount,
             'discount_type' => $this->discount_type,
-            'branches' => $this->branches()->pluck('name'),
             'usages' => $this->customers->count(),
             'usage_type' => $this->usage_type,
             'quantity' => $this->quantity,
@@ -38,6 +37,11 @@ class CouponResource extends JsonResource
             ],
             'booking_start_date' => $this->booking_start_date,
             'booking_end_date' => $this->booking_end_date,
+            'rooms' => $this->rooms->map(fn ($room) => [
+                'id' => $room->id,
+                'name' => $room->name,
+                'branch' => $room->branch->only(['id', 'name']),
+            ]),
         ];
     }
 }

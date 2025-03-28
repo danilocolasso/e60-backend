@@ -40,7 +40,7 @@ class CouponController extends Controller
         $data = $request->validated();
         $coupon = $this->couponRepository->store($data);
 
-        return response()->json($coupon);
+        return response()->json(new CouponResource($coupon));
     }
 
     /**
@@ -57,7 +57,7 @@ class CouponController extends Controller
     {
         Gate::authorize('update', $coupon);
 
-        return response()->json($coupon);
+        return response()->json(new CouponResource($coupon));
     }
 
     /**
@@ -66,6 +66,8 @@ class CouponController extends Controller
     public function update(UpdateCouponRequest $request, Coupon $coupon): JsonResponse
     {
         $data = $request->validated();
+
+        $coupon = $this->couponRepository->update($coupon, $data);
 
         return response()->json($coupon);
     }

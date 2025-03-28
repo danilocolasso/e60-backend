@@ -47,7 +47,24 @@ class CouponRepository
 
                 $coupon = Coupon::create($data);
 
-                $coupon->rooms()->sync(Arr::flatten($data['rooms']));
+                $coupon->rooms()->sync($data['rooms']);
+
+                return $coupon;
+            });
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function update(Coupon $coupon, array $data): Coupon
+    {
+        try {
+            return DB::transaction(function () use ($data, $coupon) {
+                $this->arrangeValidDays($data);
+
+                $coupon->update(Arr::except($data, ['id', 'rooms']));
+
+                $coupon->rooms()->sync($data['rooms']);
 
                 return $coupon;
             });
