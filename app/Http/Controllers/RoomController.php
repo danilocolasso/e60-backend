@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRoomRequest;
 use App\Http\Resources\RoomListResource;
+use App\Http\Resources\RoomResource;
 use App\Models\Room;
 use App\Repositories\RoomRepository;
 use Illuminate\Http\JsonResponse;
@@ -39,7 +40,9 @@ class RoomController extends Controller
     {
         $data = $request->validated();
 
-        return response()->json();
+        $room = Room::create($data);
+
+        return response()->json($room);
     }
 
     /**
@@ -49,7 +52,7 @@ class RoomController extends Controller
     {
         Gate::authorize('view', $room);
 
-        return response()->json($room);
+        return response()->json(new RoomResource($room));
     }
 
     /**
@@ -59,7 +62,7 @@ class RoomController extends Controller
     {
         Gate::authorize('update', $room);
 
-        return response()->json($room);
+        return response()->json(new RoomResource($room));
     }
 
     /**
@@ -68,6 +71,8 @@ class RoomController extends Controller
     public function update(Request $request, Room $room): JsonResponse
     {
         $data = $request->validated();
+
+        $room->update($data);
 
         return response()->json($room);
     }
