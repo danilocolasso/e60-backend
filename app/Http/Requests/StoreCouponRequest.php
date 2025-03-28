@@ -42,16 +42,15 @@ class StoreCouponRequest extends FormRequest
                 }),
             ],
             'valid_until' => 'nullable|date',
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i',
+            'start_time' => 'required|date_format:H:i:s',
+            'end_time' => 'required|date_format:H:i:s',
             'partner_name' => 'required|string|min:3|max:255',
             'valid_days' => 'array',
             'valid_days.*' => [Rule::in(Weekday::cases())],
             'booking_start_date' => 'nullable|date',
             'booking_end_date' => 'nullable|date',
             'rooms' => 'array',
-            'rooms.*' => 'array',
-            'rooms.*.*' => 'exists:rooms,id',
+            'rooms.*' => 'exists:rooms,id',
         ];
     }
 }
